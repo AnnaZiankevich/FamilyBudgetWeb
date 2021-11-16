@@ -1,0 +1,35 @@
+﻿
+@model IEnumerable<WebAppPg.Models.MyTest1>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>List of Records</h2>
+<a class="link-primary" href="/MyTest1/Add">Add new</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>First Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mtst in Model)
+        {
+        <tr>
+            <td>@mtst.name</td>
+            @if (!mtst.first_date_is_null)
+            {
+                <td>@mtst.first_date</td>
+            }
+            else
+            {
+                <td></td>
+            }
+            <td><a class="link-secondary" href="/MyTest1/Edit/@mtst.id">Edit</a>&nbsp;|&nbsp;<a class="link-danger" href="/MyTest1/Delete/@mtst.id">Delete</a></td>
+        </tr>
+        }
+    </tbody>
+</table>
+<a class="link-primary" href="/MyTest1/Add">Add new</a>
