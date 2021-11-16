@@ -8,38 +8,33 @@ using System.Threading.Tasks;
 //using Microsoft.Extensions.Configuration;
 using Npgsql;
 using NpgsqlTypes;
+using System.Data;
 
 namespace WebAppPg.Controllers
 {
     public class MyTest1Controller : Controller
     {
+        private string m_connectionString = "server=localhost;port=5432;user id=postgres;password=123;database=postgres";
+
         public IActionResult Index()
         {
             List<MyTest1> myTets1List = new List<MyTest1>();
 
-            string CS = "server=localhost;port=5432;user id=postgres;password=123;database=postgres";
-            using (NpgsqlConnection con = new NpgsqlConnection(CS))
+            NpgsqlConnection connection = CreateConnection();
+            using (connection)
             {
-                NpgsqlCommand cmd = CreateCommand("select id, name, first_date from sbudget.account_owners", con);
-                con.Open();
+                string request = "select id, name, first_date from sbudget.account_owners";
+                NpgsqlCommand cmd = CreateCommand(request, connection);
+                connection.Open();
 
                 NpgsqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
                     var myTest1 = new MyTest1();
-                    myTest1.id = Convert.ToInt32(rdr["id"]);
-                    myTest1.name = rdr["name"].ToString();
-                    if (rdr["first_date"] != DBNull.Value)
-                    {
-                        myTest1.first_date = Convert.ToDateTime(rdr["first_date"]);
-                        myTest1.first_date_is_null = false;
-                    }
-                    else
-                    {
-                        myTest1.first_date_is_null = true;
-                    }
                     myTets1List.Add(myTest1);
+                    Read(myTest1, rdr);
                 }
+                connection.Close();
             }
             return View(myTets1List);
         }
@@ -47,28 +42,16 @@ namespace WebAppPg.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            string CS = "server=localhost;port=5432;user id=postgres;password=p123;database=postgres";
             var myTest1 = new MyTest1();
-            using (NpgsqlConnection con = new NpgsqlConnection(CS))
+            NpgsqlConnection connection = CreateConnection();
+            using (connection)
             {
-                NpgsqlCommand cmd = CreateCommand("select id, name, first_date from sbudget.account_owners where id = " + id.ToString(), con);
-                con.Open();
+                string request = "select id, name, first_date from sbudget.account_owners where id = " + id.ToString();
+                NpgsqlCommand cmd = CreateCommand(request, connection);
+                connection.Open();
                 NpgsqlDataReader rdr = cmd.ExecuteReader();
-                if (rdr.Read())
-                {
-                    myTest1.id = Convert.ToInt32(rdr["id"]);
-                    myTest1.name = rdr["name"].ToString();
-                    if (rdr["first_date"] != DBNull.Value)
-                    {
-                        myTest1.first_date = Convert.ToDateTime(rdr["first_date"]);
-                        myTest1.first_date_is_null = false;
-                    }
-                    else
-                    {
-                        myTest1.first_date_is_null = true;
-                    }
-                }
-                con.Close();
+                if (rdr.Read()) Read(myTest1, rdr);
+                connection.Close();
             }
             return View(myTest1);
         }
@@ -76,30 +59,32 @@ namespace WebAppPg.Controllers
         [HttpPost]
         public IActionResult Edit(int id, [Bind("name")] MyTest1 myTest1)
         {
-            string CS = "server=localhost;port=5432;user id=postgres;password=123;database=postgres";
-            using (NpgsqlConnection con = new NpgsqlConnection(CS))
+            NpgsqlConnection connection = CreateConnection();
+            using (connection)
             {
-                NpgsqlCommand cmd = CreateCommand("update sbudget.account_owners set name = @name where id = " + id.ToString(), con);
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.Parameters.AddWithValue("name", NpgsqlDbType.Varchar, myTest1.name);
-                con.Open();
+                string request = "update sbudget.account_owners set name = @name where id = " + id.ToString();
+                NpgsqlCommand cmd = CreateCommand(request, connection);
+                SetCommandType(cmd, CommandType.Text);
+                AddParameter(cmd, "name", NpgsqlDbType.Varchar, myTest1.name);
+                connection.Open();
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
-                con.Close();
+                connection.Close();
             }
             return Redirect("/MyTest1");
         }
 
         public IActionResult Delete(int id)
         {
-            string CS = "server=localhost;port=5432;user id=postgres;password=123;database=postgres";
-            using (NpgsqlConnection con = new NpgsqlConnection(CS))
+            NpgsqlConnection connection = CreateConnection();
+            using (connection)
             {
-                NpgsqlCommand cmd = CreateCommand("delete from sbudget.account_owners where id = " + id.ToString(), con);
-                cmd.CommandType = System.Data.CommandType.Text;
-                con.Open();
+                string request = "delete from sbudget.account_owners where id = " + id.ToString();
+                NpgsqlCommand cmd = CreateCommand(request, connection);
+                SetCommandType(cmd, CommandType.Text);
+                connection.Open();
                 cmd.ExecuteNonQuery();
-                con.Close();
+                connection.Close();
             }
             return Redirect("/MyTest1");
         }
@@ -113,24 +98,56 @@ namespace WebAppPg.Controllers
         [HttpPost]
         public IActionResult Add([Bind("name")] MyTest1 myTest1)
         {
-            string CS = "server=localhost;port=5432;user id=postgres;password=123;database=postgres";
-            using (NpgsqlConnection con = new NpgsqlConnection(CS))
+            NpgsqlConnection connection = CreateConnection();
+            using (connection)
             {
-                NpgsqlCommand cmd = CreateCommand("insert into sbudget.account_owners (name) values(@name)", con);
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.Parameters.AddWithValue("name", NpgsqlDbType.Varchar, myTest1.name);
-                con.Open();
+                string request = "insert into sbudget.account_owners (name) values(@name)";
+                NpgsqlCommand cmd = CreateCommand(request, connection);
+                SetCommandType(cmd, CommandType.Text);
+                AddParameter(cmd, "name", NpgsqlDbType.Varchar, myTest1.name);
+                connection.Open();
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
-                con.Close();
+                connection.Close();
             }
             return Redirect("/MyTest1");
+        }
+
+        public NpgsqlConnection CreateConnection()
+        {
+            return new NpgsqlConnection(m_connectionString);
         }
 
         public NpgsqlCommand CreateCommand(string request, NpgsqlConnection connection)
         {
             return new NpgsqlCommand(request, connection);
         }
+
+        public void Read(MyTest1 model, NpgsqlDataReader reader)
+        {
+            model.id = Convert.ToInt32(reader["id"]);
+            model.name = reader["name"].ToString();
+            if (reader["first_date"] != DBNull.Value)
+            {
+                model.first_date = Convert.ToDateTime(reader["first_date"]);
+                model.first_date_is_null = false;
+            }
+            else
+            {
+                model.first_date_is_null = true;
+            }
+        }
+
+        public void AddParameter(NpgsqlCommand command, string parameterName, NpgsqlDbType parameterType, object value)
+        {
+            command.Parameters.AddWithValue(parameterName, parameterType, value);
+        }
+
+        public void SetCommandType(NpgsqlCommand command, CommandType type)
+        {
+            command.CommandType = type;
+        }
+
 
     }
 }
