@@ -99,6 +99,7 @@ namespace WebAppPg.Controllers
         public IActionResult Add([Bind("name")] MyTest1 myTest1)
         {
             NpgsqlConnection connection = CreateConnection();
+
             using (connection)
             {
                 string request = "insert into sbudget.account_owners (name) values(@name)";
@@ -110,6 +111,7 @@ namespace WebAppPg.Controllers
                 cmd.ExecuteNonQuery();
                 connection.Close();
             }
+
             return Redirect("/MyTest1");
         }
 
@@ -147,7 +149,6 @@ namespace WebAppPg.Controllers
         {
             command.CommandType = type;
         }
-
 
     }
 }
