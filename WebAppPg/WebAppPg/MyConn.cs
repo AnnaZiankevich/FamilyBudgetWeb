@@ -18,14 +18,19 @@ namespace WebAppPg
         //IDecorator
         //Decorator
 
-        static public NpgsqlConnection GetConnection() 
+        private static MyConn(IConfiguration configuration)
+        {
+            config = configuration;
+        }
+
+        public static NpgsqlConnection GetConnection() 
         {
             if (!isInitialized) OpenConnection();
             return connection;
             //return new NpgsqlConnection(dbConn);
         }
 
-        static public void OpenConnection()
+        public static void OpenConnection()
         {
             string dbConn = config.GetValue<string>("ConnectionStrings:PGDB");
             connection = new NpgsqlConnection(dbConn);
