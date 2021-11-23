@@ -13,9 +13,20 @@ namespace WebAppPg
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        //public Startup(IConfiguration configuration)
+        //{
+        //Configuration = configuration;
+        //}
+
+        public Startup(Microsoft.Extensions.Hosting.IHostingEnvironment evm)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+              .SetBasePath(evm.ContentRootPath)
+              .AddJsonFile("appsettings.json", true, true)
+              .AddJsonFile($"appsettings.{evm.EnvironmentName}.json", true)
+              .AddEnvironmentVariables();
+            Configuration = builder.Build(); // load all file config to Configuration property 
+            AppSettings.Instance.SetConfiguration(Configuration);
         }
 
         public IConfiguration Configuration { get; }
@@ -24,6 +35,7 @@ namespace WebAppPg
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

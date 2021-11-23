@@ -20,12 +20,12 @@ namespace WebAppPg.Controllers
         {
             List<MyTest1> myTets1List = new List<MyTest1>();
 
-            //NpgsqlConnection connection = CreateConnection();
-            //using (connection)
-            //{
+            NpgsqlConnection connection = MyConn.getInstance().GetConnection(11);
+            using (connection)
+            {
                 //string request = "select id, name, first_date from sbudget.account_owners";
                 //NpgsqlCommand cmd = CreateCommand(request, connection);
-                NpgsqlCommand cmd = CreateCommand("select id, name, first_date from sbudget.account_owners", MyConn.GetConnection());
+                NpgsqlCommand cmd = CreateCommand("select id, name, first_date from sbudget.account_owners", connection);
                 //connection.Open();
 
                 NpgsqlDataReader rdr = cmd.ExecuteReader();
@@ -35,8 +35,8 @@ namespace WebAppPg.Controllers
                     myTets1List.Add(myTest1);
                     Read(myTest1, rdr);
                 }
-                //connection.Close();
-            //}
+            MyConn.getInstance().FreeConnection(connection);
+            }
             return View(myTets1List);
         }
 
