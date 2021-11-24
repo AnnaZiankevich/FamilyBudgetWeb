@@ -8,39 +8,45 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 
+
 namespace WebAppPg
 {
-    public static class MyConn
+    public class MyConn
     {
-        private static readonly IConfiguration config;
-        static NpgsqlConnection connection;
-        static Boolean isInitialized = false;
-        //IDecorator
-        //Decorator
+        private static MyConn myConnInstance;
+        private static object syncObj = new Object();
+        //private static IConfiguration config;
+        private string connectionString = "server=localhost;port=5432;user id=postgres;password=123;database=postgres;Pooling=true;Minimum Pool Size=10;Maximum Pool Size=100;Application Name=Smart Budget Web";
 
-        private static MyConn(IConfiguration configuration)
+        private MyConn()
         {
-            config = configuration;
+
         }
 
-        public static NpgsqlConnection GetConnection() 
+        public static MyConn getInstance()
         {
-            if (!isInitialized) OpenConnection();
-            return connection;
-            //return new NpgsqlConnection(dbConn);
+            if (myConnInstance == null)
+            {
+                lock (syncObj)
+                {
+                    if (myConnInstance == null)
+                        myConnInstance = new MyConn();
+                }
+            }
+            return myConnInstance;
         }
-
-        public static void OpenConnection()
+        public NpgsqlConnection GetConnection(int appUserId)
         {
-            string dbConn = config.GetValue<string>("ConnectionStrings:PGDB");
-            connection = new NpgsqlConnection(dbConn);
-            connection.Open();
-            isInitialized = true;
+            NpgsqlConnection conn = new NpgsqlConnection(connectionString);
+            conn.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand("call sbudget.session_set_app_user(" + appUserId.ToString() + ")", conn);
+            cmd.ExecuteNonQuery();
+            return conn;
         }
         
-        public static void FreeConnection()
+        public void FreeConnection(NpgsqlConnection connection)
         {
-            if (isInitialized) connection.Close();
+            connection.Close();
         }
     }
 }
