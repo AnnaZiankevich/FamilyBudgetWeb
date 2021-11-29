@@ -16,7 +16,7 @@ namespace WebAppPg
         private static MyConn myConnInstance;
         private static object syncObj = new Object();
         //private static IConfiguration config;
-        private string connectionString = "server=localhost;port=5432;user id=postgres;password=123;database=postgres;Pooling=true;Minimum Pool Size=10;Maximum Pool Size=100;Application Name=Smart Budget Web";
+        private string connectionString = AppSettings.Instance.GetConnection("PGDB");
 
         private MyConn()
         {

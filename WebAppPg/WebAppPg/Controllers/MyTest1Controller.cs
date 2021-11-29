@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 using Npgsql;
 using NpgsqlTypes;
 using System.Data;
+using System.Web.Http;
 
 namespace WebAppPg.Controllers
 {
     public class MyTest1Controller : Controller
     {
-        private string m_connectionString = "server=localhost;port=5432;user id=postgres;password=123;database=postgres";
-
+        //private string m_connectionString = "server=localhost;port=5432;user id=postgres;password=123;database=postgres";
         public IActionResult Index()
         {
             List<MyTest1> myTets1List = new List<MyTest1>();
@@ -23,10 +23,7 @@ namespace WebAppPg.Controllers
             NpgsqlConnection connection = MyConn.getInstance().GetConnection(11);
             using (connection)
             {
-                //string request = "select id, name, first_date from sbudget.account_owners";
-                //NpgsqlCommand cmd = CreateCommand(request, connection);
                 NpgsqlCommand cmd = CreateCommand("select id, name, first_date from sbudget.account_owners", connection);
-                //connection.Open();
 
                 NpgsqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
@@ -35,71 +32,69 @@ namespace WebAppPg.Controllers
                     myTets1List.Add(myTest1);
                     Read(myTest1, rdr);
                 }
-            MyConn.getInstance().FreeConnection(connection);
+                //connection.Close();
+                MyConn.getInstance().FreeConnection(connection);
             }
             return View(myTets1List);
         }
 
-        [HttpGet]
+        [System.Web.Http.HttpGet]
         public IActionResult Edit(int id)
         {
             var myTest1 = new MyTest1();
-            NpgsqlConnection connection = CreateConnection();
+            NpgsqlConnection connection = MyConn.getInstance().GetConnection(11); 
             using (connection)
             {
                 string request = "select id, name, first_date from sbudget.account_owners where id = " + id.ToString();
                 NpgsqlCommand cmd = CreateCommand(request, connection);
-                connection.Open();
                 NpgsqlDataReader rdr = cmd.ExecuteReader();
                 if (rdr.Read()) Read(myTest1, rdr);
-                connection.Close();
+                MyConn.getInstance().FreeConnection(connection);
             }
             return View(myTest1);
         }
 
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         public IActionResult Edit(int id, [Bind("name")] MyTest1 myTest1)
         {
-            NpgsqlConnection connection = CreateConnection();
+            NpgsqlConnection connection = MyConn.getInstance().GetConnection(11);
             using (connection)
             {
                 string request = "update sbudget.account_owners set name = @name where id = " + id.ToString();
                 NpgsqlCommand cmd = CreateCommand(request, connection);
                 SetCommandType(cmd, CommandType.Text);
                 AddParameter(cmd, "name", NpgsqlDbType.Varchar, myTest1.name);
-                connection.Open();
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
-                connection.Close();
+                MyConn.getInstance().FreeConnection(connection);
             }
             return Redirect("/MyTest1");
         }
 
         public IActionResult Delete(int id)
         {
-            NpgsqlConnection connection = CreateConnection();
+            NpgsqlConnection connection = MyConn.getInstance().GetConnection(11);
             using (connection)
             {
                 string request = "delete from sbudget.account_owners where id = " + id.ToString();
                 NpgsqlCommand cmd = CreateCommand(request, connection);
                 SetCommandType(cmd, CommandType.Text);
-                connection.Open();
                 cmd.ExecuteNonQuery();
-                connection.Close();
+                MyConn.getInstance().FreeConnection(connection);
             }
             return Redirect("/MyTest1");
         }
 
-        [HttpGet]
+        [System.Web.Http.HttpGet]
         public IActionResult Add()
         {
             return View();
         }
 
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         public IActionResult Add([Bind("name")] MyTest1 myTest1)
         {
-            NpgsqlConnection connection = CreateConnection();
+            NpgsqlConnection connection = MyConn.getInstance().GetConnection(11);
 
             using (connection)
             {
@@ -107,19 +102,18 @@ namespace WebAppPg.Controllers
                 NpgsqlCommand cmd = CreateCommand(request, connection);
                 SetCommandType(cmd, CommandType.Text);
                 AddParameter(cmd, "name", NpgsqlDbType.Varchar, myTest1.name);
-                connection.Open();
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
-                connection.Close();
+                MyConn.getInstance().FreeConnection(connection);
             }
 
             return Redirect("/MyTest1");
         }
 
-        public NpgsqlConnection CreateConnection()
-        {
-            return new NpgsqlConnection(m_connectionString);
-        }
+        //public NpgsqlConnection CreateConnection()
+        //{
+            //return new NpgsqlConnection(m_connectionString);
+        //}
 
         public NpgsqlCommand CreateCommand(string request, NpgsqlConnection connection)
         {

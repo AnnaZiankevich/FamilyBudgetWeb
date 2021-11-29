@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +36,14 @@ namespace WebAppPg
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.Name = "MySessionCookie";
+                    options.LoginPath = "/Login/LoginForm";
+                    options.SlidingExpiration = true;
+                });
+
             services.AddControllersWithViews();
             services.AddSingleton(Configuration);
         }
@@ -56,13 +66,24 @@ namespace WebAppPg
 
             app.UseRouting();
 
+            var cookiePolicyOptions = new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+                HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always,
+                Secure = CookieSecurePolicy.None,
+            };
+
+            app.UseCookiePolicy(cookiePolicyOptions);
+
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Login}/{action=LoginForm}/{id?}");
             });
         }
     }

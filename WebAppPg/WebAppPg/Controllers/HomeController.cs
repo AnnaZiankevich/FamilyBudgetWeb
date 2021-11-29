@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http;
 using WebAppPg.Models;
 
 namespace WebAppPg.Controllers
@@ -18,6 +19,7 @@ namespace WebAppPg.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
