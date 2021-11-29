@@ -83,7 +83,7 @@ namespace WebAppPg
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Login}/{action=LoginForm}/{id?}");
+                    pattern: "{controller=User}/{action=LoginForm}/{id?}");
             });
         }
     }

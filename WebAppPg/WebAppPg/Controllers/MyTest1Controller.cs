@@ -13,9 +13,11 @@ using System.Web.Http;
 
 namespace WebAppPg.Controllers
 {
+    //[Authorize]
     public class MyTest1Controller : Controller
     {
         //private string m_connectionString = "server=localhost;port=5432;user id=postgres;password=123;database=postgres";
+        
         public IActionResult Index()
         {
             List<MyTest1> myTets1List = new List<MyTest1>();
@@ -38,7 +40,7 @@ namespace WebAppPg.Controllers
             return View(myTets1List);
         }
 
-        [System.Web.Http.HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         public IActionResult Edit(int id)
         {
             var myTest1 = new MyTest1();
@@ -54,7 +56,7 @@ namespace WebAppPg.Controllers
             return View(myTest1);
         }
 
-        [System.Web.Http.HttpPost]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
         public IActionResult Edit(int id, [Bind("name")] MyTest1 myTest1)
         {
             NpgsqlConnection connection = MyConn.getInstance().GetConnection(11);
@@ -68,7 +70,7 @@ namespace WebAppPg.Controllers
                 cmd.ExecuteNonQuery();
                 MyConn.getInstance().FreeConnection(connection);
             }
-            return Redirect("/MyTest1");
+            return Redirect("/MyTest1/Index");
         }
 
         public IActionResult Delete(int id)
@@ -82,16 +84,16 @@ namespace WebAppPg.Controllers
                 cmd.ExecuteNonQuery();
                 MyConn.getInstance().FreeConnection(connection);
             }
-            return Redirect("/MyTest1");
+            return Redirect("/MyTest1/Index");
         }
 
-        [System.Web.Http.HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         public IActionResult Add()
         {
             return View();
         }
 
-        [System.Web.Http.HttpPost]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
         public IActionResult Add([Bind("name")] MyTest1 myTest1)
         {
             NpgsqlConnection connection = MyConn.getInstance().GetConnection(11);
@@ -107,7 +109,7 @@ namespace WebAppPg.Controllers
                 MyConn.getInstance().FreeConnection(connection);
             }
 
-            return Redirect("/MyTest1");
+            return Redirect("/MyTest1/Index");
         }
 
         //public NpgsqlConnection CreateConnection()

@@ -15,7 +15,7 @@ namespace WebAppPg.Controllers
     public class UserController : Controller
     {
         [System.Web.Http.HttpGet]
-        public IActionResult LogIn()
+        public IActionResult LoginForm()
         {
             return View();
         }
@@ -23,13 +23,13 @@ namespace WebAppPg.Controllers
         [System.Web.Http.HttpPost]
         public async Task<IActionResult> PerformLogin([Bind] UserModel userdetails)
         {
-            if ((!string.IsNullOrEmpty(userdetails.Id)) && (!string.IsNullOrEmpty(userdetails.Password)) && (!string.IsNullOrEmpty(userdetails.Login)))
+            if ((!string.IsNullOrEmpty(userdetails.Password)) && (!string.IsNullOrEmpty(userdetails.Login)))
             {
-                if ((userdetails.Id.Equals("admin") && userdetails.Password.Equals("admin") && userdetails.Login.Equals("admin")))
+                if (userdetails.Password.Equals("aaa") && userdetails.Login.Equals("admin"))
                 {
                     var claims = new List<Claim>
                     {
-                    new Claim(ClaimTypes.Name, userdetails.Id),
+                    new Claim(ClaimTypes.Name, userdetails.Login),
                     new Claim(ClaimTypes.Role, "User"),
                     };
                     var claimsIdentity = new ClaimsIdentity(
@@ -45,10 +45,10 @@ namespace WebAppPg.Controllers
                         new ClaimsPrincipal(claimsIdentity),
                         authProperties);
 
-                    return RedirectToAction("LogIn", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
             }
-            return View("LogIn");
+            return View("LoginForm");
         }
     }
 }
