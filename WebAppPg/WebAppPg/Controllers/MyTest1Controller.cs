@@ -22,7 +22,7 @@ namespace WebAppPg.Controllers
         {
             List<MyTest1> myTets1List = new List<MyTest1>();
 
-            NpgsqlConnection connection = MyConn.getInstance().GetConnection(11);
+            NpgsqlConnection connection = MyConn.Instance.GetUsersConnection();
             using (connection)
             {
                 NpgsqlCommand cmd = CreateCommand("select id, name, first_date from sbudget.account_owners", connection);
@@ -35,7 +35,7 @@ namespace WebAppPg.Controllers
                     Read(myTest1, rdr);
                 }
                 //connection.Close();
-                MyConn.getInstance().FreeConnection(connection);
+                MyConn.Instance.FreeConnection(connection);
             }
             return View(myTets1List);
         }
@@ -44,14 +44,14 @@ namespace WebAppPg.Controllers
         public IActionResult Edit(int id)
         {
             var myTest1 = new MyTest1();
-            NpgsqlConnection connection = MyConn.getInstance().GetConnection(11); 
+            NpgsqlConnection connection = MyConn.Instance.GetUsersConnection();
             using (connection)
             {
                 string request = "select id, name, first_date from sbudget.account_owners where id = " + id.ToString();
                 NpgsqlCommand cmd = CreateCommand(request, connection);
                 NpgsqlDataReader rdr = cmd.ExecuteReader();
                 if (rdr.Read()) Read(myTest1, rdr);
-                MyConn.getInstance().FreeConnection(connection);
+                MyConn.Instance.FreeConnection(connection);
             }
             return View(myTest1);
         }
@@ -59,7 +59,7 @@ namespace WebAppPg.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public IActionResult Edit(int id, [Bind("name")] MyTest1 myTest1)
         {
-            NpgsqlConnection connection = MyConn.getInstance().GetConnection(11);
+            NpgsqlConnection connection = MyConn.Instance.GetUsersConnection();
             using (connection)
             {
                 string request = "update sbudget.account_owners set name = @name where id = " + id.ToString();
@@ -68,21 +68,21 @@ namespace WebAppPg.Controllers
                 AddParameter(cmd, "name", NpgsqlDbType.Varchar, myTest1.name);
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
-                MyConn.getInstance().FreeConnection(connection);
+                MyConn.Instance.FreeConnection(connection);
             }
             return Redirect("/MyTest1/Index");
         }
 
         public IActionResult Delete(int id)
         {
-            NpgsqlConnection connection = MyConn.getInstance().GetConnection(11);
+            NpgsqlConnection connection = MyConn.Instance.GetUsersConnection();
             using (connection)
             {
                 string request = "delete from sbudget.account_owners where id = " + id.ToString();
                 NpgsqlCommand cmd = CreateCommand(request, connection);
                 SetCommandType(cmd, CommandType.Text);
                 cmd.ExecuteNonQuery();
-                MyConn.getInstance().FreeConnection(connection);
+                MyConn.Instance.FreeConnection(connection);
             }
             return Redirect("/MyTest1/Index");
         }
@@ -96,7 +96,7 @@ namespace WebAppPg.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public IActionResult Add([Bind("name")] MyTest1 myTest1)
         {
-            NpgsqlConnection connection = MyConn.getInstance().GetConnection(11);
+            NpgsqlConnection connection = MyConn.Instance.GetUsersConnection();
 
             using (connection)
             {
@@ -106,7 +106,7 @@ namespace WebAppPg.Controllers
                 AddParameter(cmd, "name", NpgsqlDbType.Varchar, myTest1.name);
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
-                MyConn.getInstance().FreeConnection(connection);
+                MyConn.Instance.FreeConnection(connection);
             }
 
             return Redirect("/MyTest1/Index");

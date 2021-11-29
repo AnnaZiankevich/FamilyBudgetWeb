@@ -8,6 +8,7 @@ namespace WebAppPg.Models
 {
     public class UserModel
     {
+        [Required]
         public int Id { get; set; }
 
         [Required]

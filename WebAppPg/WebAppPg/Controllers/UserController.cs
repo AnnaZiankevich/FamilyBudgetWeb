@@ -25,15 +25,19 @@ namespace WebAppPg.Controllers
         {
             if ((!string.IsNullOrEmpty(userdetails.Password)) && (!string.IsNullOrEmpty(userdetails.Login)))
             {
-                if (userdetails.Password.Equals("aaa") && userdetails.Login.Equals("admin"))
+                UserModel appUser = AppUserDAO.FindByName(userdetails.Login);
+                if (appUser != null)
+                //userdetails.Password.Equals("admin")))
                 {
                     var claims = new List<Claim>
                     {
-                    new Claim(ClaimTypes.Name, userdetails.Login),
-                    new Claim(ClaimTypes.Role, "User"),
+                        new Claim(ClaimTypes.Name, appUser.Login),
+                        new Claim(ClaimTypes.Role, "User"),
+                        new Claim(ClaimTypes.NameIdentifier, appUser.Id.ToString())
                     };
+
                     var claimsIdentity = new ClaimsIdentity(
-                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                     var authProperties = new AuthenticationProperties
                     {
@@ -41,9 +45,9 @@ namespace WebAppPg.Controllers
                     };
 
                     await HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme, 
-                        new ClaimsPrincipal(claimsIdentity),
-                        authProperties);
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
 
                     return RedirectToAction("Index", "Home");
                 }

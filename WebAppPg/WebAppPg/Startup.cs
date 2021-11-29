@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAppPg.Models;
 
 namespace WebAppPg
 {
@@ -46,6 +47,7 @@ namespace WebAppPg
 
             services.AddControllersWithViews();
             services.AddSingleton(Configuration);
+            MyConn.CreateInstance(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
