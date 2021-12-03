@@ -41,7 +41,7 @@ namespace WebAppPg
                 .AddCookie(options =>
                 {
                     options.Cookie.Name = "MySessionCookie";
-                    options.LoginPath = "/Login/LoginForm";
+                    options.LoginPath = "/User/LoginForm";
                     options.SlidingExpiration = true;
                 });
 

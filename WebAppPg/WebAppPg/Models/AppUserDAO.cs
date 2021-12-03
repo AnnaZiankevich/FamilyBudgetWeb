@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAppPg.Models;
 
 namespace WebAppPg.Models
 {
@@ -16,7 +17,7 @@ namespace WebAppPg.Models
             string pwdHash;
             UserModel appUser = null;
             NpgsqlConnection conn = MyConn.Instance.GetUsersConnection();
-            NpgsqlCommand cmd = new NpgsqlCommand("select id, user_login, user_password from sbudget.app_users where user_login = @login", conn);
+            NpgsqlCommand cmd = new NpgsqlCommand("select id, user_login, user_password from sb.app_users where user_login = @login", conn);
             cmd.Parameters.AddWithValue("login", NpgsqlDbType.Varchar, login);
             NpgsqlDataReader rdr = cmd.ExecuteReader();
             if (rdr.Read())
@@ -28,6 +29,29 @@ namespace WebAppPg.Models
             }
             MyConn.Instance.FreeConnection(conn);
             return appUser;
+        }
+
+        public static MyTest1 FindById(int id)
+        {
+            int accOwnId;
+            string accOwnName;
+            bool accOwnIsActive;
+            int accOwnAppUserId;
+            MyTest1 accOwn = null;
+            NpgsqlConnection conn = MyConn.Instance.GetUsersConnection();
+            NpgsqlCommand cmd = new NpgsqlCommand("select id, name, is_active, app_user_id from sb.account_owners where id = @id", conn);
+            cmd.Parameters.AddWithValue("id", NpgsqlDbType.Integer, id);
+            NpgsqlDataReader rdr = cmd.ExecuteReader();
+            if (rdr.Read())
+            {
+                accOwnId = rdr.GetInt32(0);
+                accOwnName = rdr.GetString(1);
+                accOwnIsActive = rdr.GetBoolean(2);
+                accOwnAppUserId = rdr.GetInt32(3);
+                accOwn = new MyTest1 { id = accOwnId, name = accOwnName, is_active = accOwnIsActive, app_user_id = accOwnAppUserId };
+            }
+            MyConn.Instance.FreeConnection(conn);
+            return accOwn;
         }
     }
 }

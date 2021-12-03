@@ -6,21 +6,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web.Http;
 using WebAppPg.Models;
 
 namespace WebAppPg.Controllers
 {
-    [Authorize]
     public class UserController : Controller
     {
-        [System.Web.Http.HttpGet]
         public IActionResult LoginForm()
         {
             return View();
         }
 
-        [System.Web.Http.HttpPost]
+        [HttpPost]
         public async Task<IActionResult> PerformLogin([Bind] UserModel userdetails)
         {
             if ((!string.IsNullOrEmpty(userdetails.Password)) && (!string.IsNullOrEmpty(userdetails.Login)))
@@ -52,6 +49,13 @@ namespace WebAppPg.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
+            return View("LoginForm");
+        }
+
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
             return View("LoginForm");
         }
     }

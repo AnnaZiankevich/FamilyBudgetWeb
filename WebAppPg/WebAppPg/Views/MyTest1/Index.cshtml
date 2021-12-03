@@ -9,26 +9,28 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>First Date</th>
+            <th>Is active?</th>
+            <th>App user</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var mtst in Model)
-         {
-            <tr>
-              <td>@mtst.name</td>
-                @if (!mtst.first_date_is_null)
-                {
-                    <td>@mtst.first_date</td>
-                }
-                else
-                {
-                    <td></td>
-                }
-              <td><a class="link-secondary" href="/MyTest1/Edit/@mtst.id">Edit</a>&nbsp;|&nbsp;<a class="link-danger" href="/MyTest1/Delete/@mtst.id">Delete</a></td>
-            </tr>
-         }
+        {
+        <tr>
+            <td>@mtst.name</td>
+            <td>
+                <div class="ml-4">
+                    <input class="form-check-input" id="flexCheckCheckedDisabled" type="checkbox" checked=@mtst.is_active disabled>
+                    <label class="form-check-label" for="flexCheckCheckedDisabled">
+                        Active
+                    </label>
+                </div>
+            </td>
+            <td>@mtst.app_user_id</td>
+            <td><a class="link-secondary" href="/MyTest1/Edit/@mtst.id">Edit</a>&nbsp;|&nbsp;<a class="link-danger" href="/MyTest1/Delete/@mtst.id">Delete</a></td>
+        </tr>
+        }
     </tbody>
 </table>
 <a class="link-primary" href="/MyTest1/Add">Add new</a>

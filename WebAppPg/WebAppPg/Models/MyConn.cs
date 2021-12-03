@@ -48,7 +48,7 @@ namespace WebAppPg.Models
         {
             NpgsqlConnection conn = new NpgsqlConnection(_mainConnectionString);
             conn.Open();
-            NpgsqlCommand cmd = new NpgsqlCommand("call sbudget.session_set_app_user(" + appUserId.ToString() + ")", conn);
+            NpgsqlCommand cmd = new NpgsqlCommand("call sb.session_set_app_user(" + appUserId.ToString() + ")", conn);
             cmd.ExecuteNonQuery();
             return conn;
         }

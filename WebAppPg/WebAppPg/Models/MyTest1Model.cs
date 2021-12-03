@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace WebAppPg.Models
 {
     public class MyTest1
@@ -14,8 +13,7 @@ namespace WebAppPg.Models
         public int id { get; set; }
         [Required]
         public string name { get; set; }
-        [DataType(DataType.Date)]
-        public DateTime first_date { get; set; }
-        public bool first_date_is_null { get; set; }
+        public Boolean is_active { get; set; }
+        public int app_user_id { get; set; }
     }
 }

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Npgsql;
 using NpgsqlTypes;
 using System.Data;
-using System.Web.Http;
 
 namespace WebAppPg.Controllers
 {
@@ -17,15 +16,14 @@ namespace WebAppPg.Controllers
     public class MyTest1Controller : Controller
     {
         //private string m_connectionString = "server=localhost;port=5432;user id=postgres;password=123;database=postgres";
-        
+        static List<MyTest1> myTets1List = new List<MyTest1>();
         public IActionResult Index()
         {
-            List<MyTest1> myTets1List = new List<MyTest1>();
-
             NpgsqlConnection connection = MyConn.Instance.GetUsersConnection();
             using (connection)
             {
-                NpgsqlCommand cmd = CreateCommand("select id, name, first_date from sbudget.account_owners", connection);
+                NpgsqlCommand cmd = CreateCommand("select a.id, a.name, a.is_active, a.app_user_id, b.user_name from sb.account_owners a " +
+                                                               "join sb.app_users b on b.id = a.app_user_id", connection);
 
                 NpgsqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
@@ -37,26 +35,27 @@ namespace WebAppPg.Controllers
                 //connection.Close();
                 MyConn.Instance.FreeConnection(connection);
             }
-            return View(myTets1List);
+            return View(myTets1List.OrderBy(s => s.id).ToList());
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             var myTest1 = new MyTest1();
             NpgsqlConnection connection = MyConn.Instance.GetUsersConnection();
             using (connection)
             {
-                string request = "select id, name, first_date from sbudget.account_owners where id = " + id.ToString();
+                string request = "select id, name, is_active, app_user_id from sb.account_owners";
                 NpgsqlCommand cmd = CreateCommand(request, connection);
                 NpgsqlDataReader rdr = cmd.ExecuteReader();
                 if (rdr.Read()) Read(myTest1, rdr);
                 MyConn.Instance.FreeConnection(connection);
             }
+            //var accOwners = myTest1.Where(s => s.id == id).FirstOrDefault();
             return View(myTest1);
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [HttpPost]
         public IActionResult Edit(int id, [Bind("name")] MyTest1 myTest1)
         {
             NpgsqlConnection connection = MyConn.Instance.GetUsersConnection();
@@ -78,8 +77,9 @@ namespace WebAppPg.Controllers
             NpgsqlConnection connection = MyConn.Instance.GetUsersConnection();
             using (connection)
             {
-                string request = "delete from sbudget.account_owners where id = " + id.ToString();
+                string request = "select sb.account_owners_delete(pii_id => @id)";
                 NpgsqlCommand cmd = CreateCommand(request, connection);
+                AddParameter(cmd, "id", NpgsqlDbType.Integer, id);
                 SetCommandType(cmd, CommandType.Text);
                 cmd.ExecuteNonQuery();
                 MyConn.Instance.FreeConnection(connection);
@@ -87,23 +87,26 @@ namespace WebAppPg.Controllers
             return Redirect("/MyTest1/Index");
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [HttpGet]
         public IActionResult Add()
         {
             return View();
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpPost]
-        public IActionResult Add([Bind("name")] MyTest1 myTest1)
+        [HttpPost]
+        public IActionResult Add([Bind("name", "is_active", "app_user_id")] MyTest1 myTest1)
         {
             NpgsqlConnection connection = MyConn.Instance.GetUsersConnection();
 
             using (connection)
             {
-                string request = "insert into sbudget.account_owners (name) values(@name)";
+                string request = "select sb.modify_account_owner (pii_id => @id, pvi_name => @name, pbi_is_active => @is_active, pii_app_user_id => @app_user_id)";
                 NpgsqlCommand cmd = CreateCommand(request, connection);
                 SetCommandType(cmd, CommandType.Text);
+                AddParameter(cmd, "id", NpgsqlDbType.Integer, DBNull.Value);
                 AddParameter(cmd, "name", NpgsqlDbType.Varchar, myTest1.name);
+                AddParameter(cmd, "is_active", NpgsqlDbType.Boolean, myTest1.is_active);
+                AddParameter(cmd, "app_user_id", NpgsqlDbType.Integer, myTest1.is_active);
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
                 MyConn.Instance.FreeConnection(connection);
@@ -126,15 +129,8 @@ namespace WebAppPg.Controllers
         {
             model.id = Convert.ToInt32(reader["id"]);
             model.name = reader["name"].ToString();
-            if (reader["first_date"] != DBNull.Value)
-            {
-                model.first_date = Convert.ToDateTime(reader["first_date"]);
-                model.first_date_is_null = false;
-            }
-            else
-            {
-                model.first_date_is_null = true;
-            }
+            model.is_active = Convert.ToBoolean(reader["is_active"]);
+            model.app_user_id = Convert.ToInt32(reader["app_user_id"]); 
         }
 
         public void AddParameter(NpgsqlCommand command, string parameterName, NpgsqlDbType parameterType, object value)
