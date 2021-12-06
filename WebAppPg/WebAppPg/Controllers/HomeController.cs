@@ -27,9 +27,9 @@ namespace WebAppPg.Controllers
             _logger.LogInformation("############ Index page ###########");
             _logger.LogInformation("@@@@ User logged in: " + HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Name).Value);
             string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            NpgsqlConnection conn = MyConn.Instance.GetMainConnection(int.Parse(userId));
+            NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
             //do something in db here
-            MyConn.Instance.FreeConnection(conn);
+            DbConn.Instance.FreeConnection(conn);
             return View();
         }
 

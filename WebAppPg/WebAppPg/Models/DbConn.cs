@@ -11,16 +11,16 @@ using Npgsql;
 
 namespace WebAppPg.Models
 {
-    public class MyConn
+    public class DbConn
     {
         private string _mainConnectionString;
         private string _usersConnectionString;
 
-        private static MyConn _dbConnInstance;
+        private static DbConn _dbConnInstance;
 
         private static object syncObj = new Object();
 
-        private MyConn() { }
+        private DbConn() { }
 
         public static void CreateInstance(IConfiguration configuration)
         {
@@ -29,14 +29,14 @@ namespace WebAppPg.Models
                 {
                     if (_dbConnInstance == null)
                     {
-                        _dbConnInstance = new MyConn();
+                        _dbConnInstance = new DbConn();
                         _dbConnInstance._mainConnectionString = configuration.GetConnectionString("MainPgDatabase");
                         _dbConnInstance._usersConnectionString = configuration.GetConnectionString("UsersPgDatabase");
                     }
                 }
         }
 
-        public static MyConn Instance
+        public static DbConn Instance
         {
             get
             {

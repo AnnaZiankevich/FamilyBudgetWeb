@@ -1,0 +1,22 @@
+﻿@model WebAppPg.Models.AccountOwner
+@{
+    ViewBag.Title = "Add";
+}
+
+<h2>Add new Record</h2>
+<form action="/AccountOwner/Add" method="post">
+    <p>Name: <input name="Name" type="text" value="" /></p>
+    <p>
+        Is_active?<div class="ml-5">
+                    <input name="Is_active" type="checkbox" value="" />
+                  </div>
+    </p>
+    <p>
+        App user
+        @Html.DropDownListFor( model => model.app_user_id, new SelectList(Model.app_user_list, "id", "user_name"),
+         new { @class = "form-control"}) 
+    </p>
+    <p><input type="submit" value="Save" /></p>
+
+</form>
+

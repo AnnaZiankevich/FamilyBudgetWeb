@@ -1,0 +1,25 @@
+﻿@model WebAppPg.Models.AccountOwner
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit the Record</h2>
+<form action="/AccountOwner/Edit/@Model.id" method="post">
+    <input name="id" type="hidden" value="@Model.id">
+    <p>Name: <input name="Name" type="text" value="@Model.name" /></p>
+    <p>
+        Is active?
+        <div class="ml-5">
+            @Html.CheckBoxFor(model => model.is_active)
+        </div>
+    </p>
+    <input name="row_version" type="hidden" value="@Model.row_version">
+    <p>
+        App user
+        @Html.DropDownListFor(model => model.app_user_id, new SelectList(Model.app_user_list, "id", "user_name")
+        , new { @class = "form-control" })
+    </p>
+    <!--p>First Date: <input name="FirstDate" type="" value="" /></p-->
+    <p><input type="submit" value="Save" /></p>
+</form>
+
