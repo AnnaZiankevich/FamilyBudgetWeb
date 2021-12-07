@@ -24,7 +24,6 @@ namespace WebAppPg.Controllers
             {
                 UserModel appUser = AppUserDAO.FindByName(userdetails.Login);
                 if (appUser != null)
-                //userdetails.Password.Equals("admin")))
                 {
                     var claims = new List<Claim>
                     {
@@ -57,6 +56,11 @@ namespace WebAppPg.Controllers
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
             return View("LoginForm");
+        }
+
+        public void Kek()
+        {
+
         }
     }
 }

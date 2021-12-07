@@ -4,19 +4,21 @@
     ViewBag.Title = "Index";
 }
 
-<h2>List of Records</h2>
-<table class="table table-bordered">
+<div class="pb-1">
+    <h3>List of Account Owners</h3>
+</div>
+<table class="table table-bordered table-striped table-hover ">
     <thead>
-        <tr>
+        <tr style="background-color: #f0e8ff;">
             <th>Name</th>
             <th>Is active?</th>
             <th>App user</th>
             <th>Actions</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody style="background-color: #fdfcff;">
         @foreach (var mtst in Model)
-         {
+        {
             <tr>
                 <td>@mtst.name</td>
                 <td>
@@ -28,9 +30,9 @@
                     </div>
                 </td>
                 <td>@mtst.app_user_id</td>
-                <td><a class="link-secondary" href="/AccountOwner/Edit/@mtst.id">Edit</a>&nbsp;|&nbsp;<a class="link-danger" href="/AccountOwner/Delete/@mtst.id">Delete</a></td>
+                <td><a class="btn" href="/AccountOwner/Edit/@mtst.id" style="background-color: #55c9a9; color: #ebfff9 ">Edit</a> <a class="btn" href="/AccountOwner/Delete/@mtst.id" style="background-color: #55c9a9; color: #ebfff9 ">Delete</a></td>
             </tr>
-         }
+        }
     </tbody>
 </table>
-<a class="link-primary" href="/AccountOwner/Add">Add new</a>
+<a class="btn" href="/AccountOwner/Add" style="background-color: #55c9a9; color: #ebfff9">Add new</a>
