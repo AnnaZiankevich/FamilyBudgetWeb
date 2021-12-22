@@ -14,7 +14,7 @@ namespace WebAppPg.Controllers
     {
         static List<Account> accountsList = new List<Account>();
 
-        [HttpGet]
+        /*[HttpGet]
         public IActionResult List(int id)
         {
             string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
@@ -44,9 +44,10 @@ namespace WebAppPg.Controllers
                 DbConn.Instance.FreeConnection(conn);
             }
             return View(accountsList);
-        }
+        }*/
+
         [HttpGet]
-        public IActionResult ListExt([Bind("accOwnerId")] int accOwnerid)
+        public IActionResult List([Bind("accOwnerId")] int accOwnerid)
         {
             string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));

@@ -23,7 +23,7 @@ namespace WebAppPg.Controllers
             if ((!string.IsNullOrEmpty(userdetails.Password)) && (!string.IsNullOrEmpty(userdetails.Login)))
             {
                 UserModel appUser = AppUserDAO.FindByName(userdetails.Login);
-                if (appUser != null)
+                if (appUser != null && (appUser.Password.Equals(userdetails.Password)) && (appUser.Login.Equals(userdetails.Login)))
                 {
                     var claims = new List<Claim>
                     {
@@ -56,11 +56,6 @@ namespace WebAppPg.Controllers
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
             return View("LoginForm");
-        }
-
-        public void Kek()
-        {
-
         }
     }
 }

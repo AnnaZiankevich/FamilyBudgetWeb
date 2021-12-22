@@ -1,4 +1,13 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(function () {
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar, #content').toggleClass('active');
+        var text = $("#toggleMessage").text();
 
-// Write your JavaScript code.
+        if (text == "Show menu") {
+            $("#toggleMessage").text("Hide menu");
+        }
+        else {
+            $("#toggleMessage").text("Show menu");
+        }
+    });
+}); 
