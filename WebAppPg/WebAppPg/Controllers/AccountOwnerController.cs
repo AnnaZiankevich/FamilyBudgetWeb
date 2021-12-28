@@ -19,7 +19,7 @@ namespace WebAppPg.Controllers
             NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
             using (conn)
             {
-                NpgsqlCommand cmd = CreateCommand("select a.id, a.name, a.is_active, a.app_user_id, b.user_name from sb.account_owners a " +
+                NpgsqlCommand cmd = new NpgsqlCommand("select a.id, a.name, a.is_active, a.app_user_id, b.user_name from sb.account_owners a " +
                                                                "left join sb.app_users b on b.id = a.app_user_id", conn);
                 accOwnerList.Clear();
                 NpgsqlDataReader rdr = cmd.ExecuteReader();
@@ -55,7 +55,7 @@ namespace WebAppPg.Controllers
                 string request = "select sb.modify_account_owner (pii_id => :id, pvi_name => :name, " +
                                                 "pbi_is_active => :is_active, pii_row_version => :row_version, " +
                                                 "pii_app_user_id => :app_user_id) ";
-                NpgsqlCommand cmd = CreateCommand(request, conn);
+                NpgsqlCommand cmd = new NpgsqlCommand(request, conn);
                 SetCommandType(cmd, CommandType.Text);
                 AddParameter(cmd, "id", NpgsqlDbType.Integer, id);
                 AddParameter(cmd, "name", NpgsqlDbType.Varchar, accOwner.name);
@@ -76,7 +76,7 @@ namespace WebAppPg.Controllers
             using (conn)
             {
                 string request = "select sb.account_owners_delete(pii_id => @id)";
-                NpgsqlCommand cmd = CreateCommand(request, conn);
+                NpgsqlCommand cmd = new NpgsqlCommand(request, conn);
                 AddParameter(cmd, "id", NpgsqlDbType.Integer, id);
                 SetCommandType(cmd, CommandType.Text);
                 cmd.ExecuteNonQuery();
@@ -108,7 +108,7 @@ namespace WebAppPg.Controllers
                 string request = "select sb.modify_account_owner (pii_id => @id, pvi_name => @name, " +
                                                     "pbi_is_active => @is_active, pii_row_version => @row_version," +
                                                     "pii_app_user_id => @app_user_id)";
-                NpgsqlCommand cmd = CreateCommand(request, conn);
+                NpgsqlCommand cmd = new NpgsqlCommand(request, conn);
                 SetCommandType(cmd, CommandType.Text);
                 AddParameter(cmd, "id", NpgsqlDbType.Integer, DBNull.Value);
                 AddParameter(cmd, "name", NpgsqlDbType.Varchar, accOwner.name);

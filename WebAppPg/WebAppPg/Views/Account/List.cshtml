@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebAppPg.Models.Account>
+﻿@model WebAppPg.Models.AccountList
 @{
     ViewBag.Title = "List of accounts";
 }
@@ -6,7 +6,9 @@
 <div class="pb-1">
     <h3>List of accounts</h3>
 </div>
-<p><a class="btn" href="/Account/Add" style="background-color: #55c9a9; color: #ebfff9">Add new</a></p>
+
+<p><a class="btn" href="/Account/Add?accOwnerId=@Model.accountOwnerId" style="background-color: #55c9a9; color: #ebfff9">Add new</a></p>
+
 <table class="table table-bordered table-striped table-hover ">
     <thead>
         <tr style="background-color: #f0e8ff;">
@@ -18,23 +20,30 @@
         </tr>
     </thead>
     <tbody style="background-color: #fdfcff;">
-        @foreach (var account in Model)
-         {
-           <tr>
-               <td>@account.name</td>
-               <td>@account.account_type_code</td>  
-               <td>
-                   <div class="ml-4">
-                       <input class="form-check-input" id="flexCheckCheckedDisabled" type="checkbox" checked=@account.is_active disabled>
-                       <label class="form-check-label" for="flexCheckCheckedDisabled">
-                           Active
-                       </label>
-                   </div>
-               </td>
-               <td>@account.currency_code</td>
-               <td><a class="btn" href="/AccountOwner/Edit/@account.id" style="background-color: #55c9a9; color: #ebfff9 ">Edit</a> <a class="btn" href="/Account/Delete/@account.id" style="background-color: #55c9a9; color: #ebfff9 ">Delete</a></td>
-           </tr>
-         }
+        @if (Model.accountList.Count() > 0)
+        {
+            @foreach (var account in Model.accountList)
+            {
+                <tr>
+                    <td>@account.name</td>
+                    <td>@account.account_type_name</td>
+                    <td>
+                        <div class="ml-4">
+                            <input class="form-check-input" id="flexCheckCheckedDisabled" type="checkbox" checked=@account.is_active disabled>
+                            <label class="form-check-label" for="flexCheckCheckedDisabled">
+                                Active
+                            </label>
+                        </div>
+                    </td>
+                    <td>@account.currency_name</td>
+                    <td><a class="btn" href="/Account/Edit/@account.id" style="background-color: #55c9a9; color: #ebfff9 ">Edit</a> <a class="btn" href="/Account/Delete/@account.id" style="background-color: #55c9a9; color: #ebfff9 ">Delete</a></td>
+                </tr>
+            }
+        }
+        else { 
+            <tr><td>No accounts yet</td></tr>
+        }
     </tbody>
 </table>
-<a class="btn" href="/Account/Add" style="background-color: #55c9a9; color: #ebfff9">Add new</a>
+
+ <p><a class="btn" href="/Account/Add?accOwnerId=@Model.accountOwnerId" style="background-color: #55c9a9; color: #ebfff9">Add new</a></p>
