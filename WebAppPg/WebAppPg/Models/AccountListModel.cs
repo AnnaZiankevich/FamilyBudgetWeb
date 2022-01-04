@@ -16,7 +16,7 @@ namespace WebAppPg.Models
         public Boolean is_active { get; set; }
         public string currency_code { get; set; }
         public string currency_name { get; set; }
-         public int row_version { get; set; }
+        public int row_version { get; set; }
 
     }
     public class AccountList

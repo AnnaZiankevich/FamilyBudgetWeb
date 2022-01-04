@@ -1,0 +1,30 @@
+﻿@model WebAppPg.Models.AccountBalancesList
+@{
+    ViewBag.Title = "List of accounts";
+}
+
+<div class="pb-1">
+    @foreach (var accBal in Model.accountBalancesList)
+     {
+    <h3>List of balances for account [@accBal.account_name]</h3>
+     }     
+</div>
+<table class="table table-bordered table-striped table-hover ">
+    <thead>
+        <tr style="background-color: #f0e8ff;">
+            <th>Period</th>
+            <th>Amount</th>
+            <th>Currency</th>
+        </tr>
+    </thead>
+    <tbody style="background-color: #fdfcff;">
+        @foreach (var accountBal in Model.accountBalancesList)
+        {
+            <tr>
+                <td>@accountBal.period_name</td>
+                <td>@accountBal.amount</td>
+                <td>@accountBal.currency_code</td>
+            </tr>
+        }
+    </tbody>
+</table>

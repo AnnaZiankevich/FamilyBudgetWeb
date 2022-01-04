@@ -36,7 +36,11 @@
                         </div>
                     </td>
                     <td>@account.currency_name</td>
-                    <td><a class="btn" href="/Account/Edit/@account.id" style="background-color: #55c9a9; color: #ebfff9 ">Edit</a> <a class="btn" href="/Account/Delete/@account.id" style="background-color: #55c9a9; color: #ebfff9 ">Delete</a></td>
+                    <td>
+                        <a class="btn" href="/AccountBalance/List?account_id=@account.id" style="background-color: #fcc3a4; color: #fffbfa ">Balances</a>
+                        <a class="btn" href="/Account/Edit/@account.id" style="background-color: #55c9a9; color: #ebfff9 ">Edit</a>
+                        <a class="btn" href="/Account/Delete/@account.id?row_version=@account.row_version&account_owner_id=@account.account_owner_id" style="background-color: #55c9a9; color: #ebfff9 ">Delete</a>
+                    </td>
                 </tr>
             }
         }

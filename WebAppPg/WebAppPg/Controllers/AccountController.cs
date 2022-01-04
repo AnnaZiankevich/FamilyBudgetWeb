@@ -25,7 +25,8 @@ namespace WebAppPg.Controllers
             using (conn)
             {
                 NpgsqlCommand cmd = new NpgsqlCommand("select a.id, a.name, a.account_type_code, a.is_active, a.currency_code, " +
-                                                            " b.name as account_owner_name, c.name as currency_name, d.name as account_type_name " +
+                                                            " b.name as account_owner_name, c.name as currency_name, d.name as account_type_name," +
+                                                            " a.row_version " +
                                                         " from sb.accounts a, sb.account_owners b, sb.currencies c, sb.account_types d " +
                                                         " where a.account_owner_id = @accOwnerId and b.id = a.account_owner_id and c.code = a.currency_code and d.code = a.account_type_code " +
                                                         " order by a.name", conn);
@@ -45,7 +46,8 @@ namespace WebAppPg.Controllers
                         account_owner_name = rdr.GetString("account_owner_name"),
                         is_active = rdr.GetBoolean("is_active"),
                         currency_code = rdr.GetString("currency_code"),
-                        currency_name = rdr.GetString("currency_name")
+                        currency_name = rdr.GetString("currency_name"),
+                        row_version = rdr.GetInt32("row_version")
                     };
 
                     accountList.accountList.Add(account);
@@ -138,6 +140,22 @@ namespace WebAppPg.Controllers
                 cmd.Parameters.AddWithValue("currency_code", NpgsqlDbType.Varchar, account.currency_code);
                 cmd.Parameters.AddWithValue("row_version", NpgsqlDbType.Integer, account.row_version);
                 cmd.Prepare();
+                cmd.ExecuteNonQuery();
+                DbConn.Instance.FreeConnection(conn);
+            }
+            return Redirect("/Account/List?accOwnerId=" + account.account_owner_id.ToString());
+        }
+
+        public IActionResult Delete(int id, [Bind("account_owner_id", "row_version")] Account account)
+        {
+            string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
+            using (conn)
+            {
+                string request = "call sb.account_delete(pii_account_id => @id, pii_row_version => @row_version)";
+                NpgsqlCommand cmd = new NpgsqlCommand(request, conn);
+                cmd.Parameters.AddWithValue("id", NpgsqlDbType.Integer, id);
+                cmd.Parameters.AddWithValue("row_version", NpgsqlDbType.Integer, account.row_version);
                 cmd.ExecuteNonQuery();
                 DbConn.Instance.FreeConnection(conn);
             }
