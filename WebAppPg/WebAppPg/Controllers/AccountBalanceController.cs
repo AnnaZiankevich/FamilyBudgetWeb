@@ -22,7 +22,7 @@ namespace WebAppPg.Controllers
             NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
             using (conn)
             {
-                NpgsqlCommand cmd = new NpgsqlCommand("select a.id, a.account_id, a.period_id, a.amount, a.currency_code, " +
+                NpgsqlCommand cmd = new NpgsqlCommand("select a.id, a.account_id, a.period_id, a.amount, a.currency_code," +
                                                         " b.name as period_name, c.name as account_name" +
                                                         " from sb.account_balances a, sb.periods b, sb.accounts c" +
                                                         " where a.account_id = @account_id and b.id = a.period_id and c.id = a.account_id", conn);
@@ -41,15 +41,12 @@ namespace WebAppPg.Controllers
                         period_name = rdr.GetString("period_name"),
                         amount = rdr.GetDecimal("amount"),
                         currency_code = rdr.GetString("currency_code")                       
-                        //previous_balance_id = rdr.GetInt32("previous_balance_id")
                     };
 
                     accountBalList.accountBalancesList.Add(accountBalance);
-                    //Read(account, rdr);
                 }
                 DbConn.Instance.FreeConnection(conn);
             }
-            //return View(accountsList);
             return View(accountBalList);
         }
     }

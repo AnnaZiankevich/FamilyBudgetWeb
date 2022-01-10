@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAppPg.Models;
+using System.Text;
 
 namespace WebAppPg
 {
@@ -87,6 +88,7 @@ namespace WebAppPg
                     name: "default",
                     pattern: "{controller=User}/{action=LoginForm}/{id?}");
             });
+
         }
     }
 }

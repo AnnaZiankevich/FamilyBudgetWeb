@@ -39,5 +39,26 @@ namespace WebAppPg.Models
             DbConn.Instance.FreeConnection(conn);
             return account;
         }
+
+        public static List<Account> GetAccountList(NpgsqlConnection conn)
+        {
+            conn = DbConn.Instance.GetUsersConnection();
+            NpgsqlCommand cmd = new NpgsqlCommand("select id, name from sb.accounts", conn);
+            List<Account> accounts = new List<Account>();
+            NpgsqlDataReader rdr = cmd.ExecuteReader();
+            if (rdr.HasRows)
+            {
+                while (rdr.Read())
+                {
+                    accounts.Add(new Account
+                    {
+                        id = rdr.GetInt32(0),
+                        name = rdr.GetString(1)
+                    });
+                }
+            }
+            DbConn.Instance.FreeConnection(conn);
+            return accounts;
+        }
     }
 }

@@ -1,0 +1,47 @@
+﻿@model WebAppPg.Models.IncomeList
+@{
+    ViewBag.Title = "List of accounts";
+}
+
+<div class="pb-1">
+    <h3>List of incomes</h3>
+</div>
+
+<p><a class="btn" href="/Income/Add" style="background-color: #55c9a9; color: #ebfff9">Add new</a></p>
+
+<table class="table table-bordered table-striped table-hover ">
+    <thead>
+        <tr style="background-color: #f0e8ff;">
+            <th>Name</th>
+            <th>Account</th>
+            <th>Planned income</th>
+            <th>Income sourse</th>
+            <th>Income type</th>
+            <th>Amount</th>
+            <th>Currency</th>
+            <th>Income date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody style="background-color: #fdfcff;">
+        @foreach (var income in Model.incomeList)
+        {
+            <tr>
+                <td>@income.name</td>
+                <td>@income.account_name</td>
+                <td>@income.planned_income_name</td>
+                <td>@income.income_source_name</td>
+                <td>@income.income_type_name</td>
+                <td>@income.amount</td>
+                <td>@income.currency_code</td>
+                <td>@income.income_date</td>
+                <td>
+                    <a class="btn" href="/Account/Edit/@income.id" style="background-color: #55c9a9; color: #ebfff9 ">Edit</a>
+                    <a class="btn" href="/Account/Delete/@income.id" style="background-color: #55c9a9; color: #ebfff9 ">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><a class="btn" href="/Income/Add" style="background-color: #55c9a9; color: #ebfff9">Add new</a></p>

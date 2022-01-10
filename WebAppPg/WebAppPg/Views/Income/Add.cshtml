@@ -1,0 +1,63 @@
+﻿@model WebAppPg.Models.Income
+@{
+    ViewBag.Title = "Add";
+}
+
+<h3>Add new account</h3>
+<form action="/Account/Add" method="post">
+
+    <p style="width: 30%; height: 20%;"><input name="name" type="text" style="width: 100%; height: 20%;" placeholder="Name" /></p>
+    
+    <p>
+        <div style="width: 30%; height: 20%;">
+            @Html.DropDownListFor(model => model.account_id, new SelectList(Model.accountList, "id", "name"),
+            new { @class = "form-control" })
+        </div>
+    
+    </p>
+
+    <p>
+        <div style="width: 30%; height: 20%;">
+            @Html.DropDownListFor(model => model.planned_income_id, new SelectList(Model.plannedIncomesList, "id", "name"),
+            new { @class = "form-control" })
+        </div>
+    </p>
+    
+    <p>
+        <div style="width: 30%; height: 20%;">
+            @Html.DropDownListFor(model => model.income_source_id, new SelectList(Model.incomeSoursesList, "id", "name"),
+            new { @class = "form-control" })
+        </div>
+    </p>
+
+    <p>
+        <div style="width: 30%; height: 20%;">
+            @Html.DropDownListFor(model => model.income_type_id, new SelectList(Model.incomeTypesList, "id", "name"),
+            new { @class = "form-control" })
+        </div>
+    </p>
+
+    <p style="width: 30%; height: 20%;"><input name="amount" type="text" style="width: 100%; height: 20%;" placeholder="Amount" /></p>
+    
+    <p>
+        <div style="width: 30%; height: 20%;">
+            @Html.DropDownListFor(model => model.currency_code, new SelectList(Model.currencyCodesList, "code", "code"),
+            new { @class = "form-control" })
+        </div>
+    </p>
+
+    <p>
+        <!---@Html.EditorFor(model => model.income_date, new { htmlAttributes = new { @class = "form-control", @style="width: 30%;" } })
+    @Html.ValidationMessageFor(model => model.income_date, "", new { @class = "text-danger" })
+        @Html.TextBoxFor(m => m.income_date, new { @Value = string.Format("{0:MM/dd/yyyy}", Model.income_date) })-->
+        <div class='input-group date' id='datetimepicker1'>
+            <input type='text' class="form-control" ng-model="selectedDt" data-date-time-picker />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+    </p>
+
+    <p><input type="submit" class="btn" style="background-color: #55c9a9; color: #ebfff9; width: 10%;" value="Save" /></p>
+
+</form>

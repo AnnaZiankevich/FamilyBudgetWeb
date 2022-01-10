@@ -31,7 +31,7 @@ namespace WebAppPg.Controllers
                 }
                 DbConn.Instance.FreeConnection(conn);
             }
-            return View(accOwnerList.OrderBy(s => s.id).ToList());
+            return View(accOwnerList);
         }
 
         [HttpGet]

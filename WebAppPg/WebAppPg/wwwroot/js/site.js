@@ -10,4 +10,6 @@
             $("#toggleMessage").text("Show menu");
         }
     });
-}); 
+});
+
+var app = angular.module("Myapp", [])

@@ -6,27 +6,28 @@ using System.Threading.Tasks;
 
 namespace WebAppPg.Models
 {
-    public class AccTypeDAO
+    public class PlannedIncomeDAO
     {
-        public static List<AccountType> GetAccTypesList(NpgsqlConnection conn)
+        public static List<PlannedIncome> GetPlannedIncomeList(NpgsqlConnection conn)
         {
             conn = DbConn.Instance.GetUsersConnection();
-            NpgsqlCommand cmd = new NpgsqlCommand("select code, name from sb.account_types", conn);
+            NpgsqlCommand cmd = new NpgsqlCommand("select id, name from sb.planned_income", conn);
             NpgsqlDataReader rdr = cmd.ExecuteReader();
-            List<AccountType> accTypes = new List<AccountType>();
+            List<PlannedIncome> plannedIncome = new List<PlannedIncome>();
             if (rdr.HasRows)
             {
                 while (rdr.Read())
                 {
-                    accTypes.Add(new AccountType
+                    plannedIncome.Add(new PlannedIncome
                     {
-                        code = rdr.GetString(0),
+                        id = rdr.GetInt32(0),
                         name = rdr.GetString(1)
                     });
                 }
             }
             DbConn.Instance.FreeConnection(conn);
-            return accTypes;
+            return plannedIncome;
         }
     }
 }
+
