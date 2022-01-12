@@ -33,7 +33,7 @@ namespace WebAppPg.Models
 
         public static List<AppUserList> GetAppUserList(NpgsqlConnection conn)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand("select -1 as id, 'App user' as user_name union all select id, user_name from sb.app_users", conn);
+            NpgsqlCommand cmd = new NpgsqlCommand("select -1 as id, '-- no app user --' as user_name union all select id, user_name from sb.app_users", conn);
             NpgsqlDataReader rdr = cmd.ExecuteReader();
             List<AppUserList> appUsers = new List<AppUserList>();
             if (rdr.HasRows)

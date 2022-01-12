@@ -67,45 +67,47 @@ namespace WebAppPg.Controllers
             NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
             Income income = new Income();
             income.plannedIncomesList = PlannedIncomeDAO.GetPlannedIncomeList(conn);
+            income.planned_income_id = -1;
             income.incomeSoursesList = IncomeSourceDAO.GetIncomeSourceList(conn);
             income.incomeTypesList = IncomeTypeDAO.GetIncomeTypeList(conn);
             income.accountList = AccountDAO.GetAccountList(conn);
+            income.account_id = -1;
             income.currencyCodesList = CurrencyCodeDAO.GetCurrCodesList(conn);
             DbConn.Instance.FreeConnection(conn);
             return View(income);
         }
 
         [HttpPost]
-        public IActionResult Add([Bind("name", "planned_income_id", "income_source_id", "income_type_id", "amount", "currency_code", "account_id", "income_date", "row_version")] Income income)
+        public IActionResult Add([Bind("name", "income_source_id", "income_type_id", "amount", "currency_code", "income_date", "row_version", "account_id", "planned_income_id")] Income income)
         {
             string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
 
             using (conn)
             {
-                string request = "select sb.modify_account (pii_id => @id, pvi_name => @name, " +
-                                                    "pvi_account_id => @account_id, " +
+                string request = "select sb.modify_income (pii_id => @id, pvi_name => @name, " +                                       
                                                     "pii_income_source_id => @income_source_id, " +
                                                     "pii_income_type_id => @income_type_id, " +
                                                     "pni_amount => @amount, " +
                                                     "pvi_currency_code => @currency_code, " +
                                                     "pdi_income_date => @income_date, " +
                                                     "pii_row_version => @row_version, " +
+                                                    "pvi_account_id => @account_id, " +
                                                     "pii_planned_income_id => @planned_income_id)";
                 NpgsqlCommand cmd = new NpgsqlCommand(request, conn);
                 //SetCommandType(cmd, CommandType.Text);
                 cmd.Parameters.AddWithValue("id", NpgsqlDbType.Integer, DBNull.Value);
-                cmd.Parameters.AddWithValue("name", NpgsqlDbType.Varchar, income.name);
-                if (income.account_id == -1)
-                  cmd.Parameters.AddWithValue("account_id", NpgsqlDbType.Integer, DBNull.Value);
-                else
-                  cmd.Parameters.AddWithValue("account_id", NpgsqlDbType.Integer, income.account_id);
+                cmd.Parameters.AddWithValue("name", NpgsqlDbType.Varchar, income.name);                
                 cmd.Parameters.AddWithValue("income_source_id", NpgsqlDbType.Integer, income.income_source_id);
                 cmd.Parameters.AddWithValue("income_type_id", NpgsqlDbType.Integer, income.income_type_id);
                 cmd.Parameters.AddWithValue("amount", NpgsqlDbType.Numeric, Convert.ToDecimal(income.amount));
                 cmd.Parameters.AddWithValue("currency_code", NpgsqlDbType.Varchar, income.currency_code);
                 cmd.Parameters.AddWithValue("income_date", NpgsqlDbType.Date, income.income_date);
                 cmd.Parameters.AddWithValue("row_version", NpgsqlDbType.Integer, income.row_version);
+                if (income.account_id == -1)
+                    cmd.Parameters.AddWithValue("account_id", NpgsqlDbType.Integer, DBNull.Value);
+                else
+                    cmd.Parameters.AddWithValue("account_id", NpgsqlDbType.Integer, income.account_id);
                 if (income.planned_income_id == -1)
                   cmd.Parameters.AddWithValue("planned_income_id", NpgsqlDbType.Integer, DBNull.Value);
                 else
@@ -115,6 +117,80 @@ namespace WebAppPg.Controllers
                 DbConn.Instance.FreeConnection(conn);
             }
 
+            return Redirect("/Income/Index");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
+            Income income = IncomeDAO.FindById(id);
+            income.plannedIncomesList = PlannedIncomeDAO.GetPlannedIncomeList(conn);
+            income.incomeSoursesList = IncomeSourceDAO.GetIncomeSourceList(conn);
+            income.incomeTypesList = IncomeTypeDAO.GetIncomeTypeList(conn);
+            income.accountList = AccountDAO.GetAccountList(conn);
+            income.currencyCodesList = CurrencyCodeDAO.GetCurrCodesList(conn);
+            DbConn.Instance.FreeConnection(conn);
+            return View(income);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, [Bind("name", "income_source_id", "income_type_id", "amount", "currency_code", "income_date", "row_version", "account_id", "planned_income_id")] Income income)
+        {
+            string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
+
+            using (conn)
+            {
+                string request = "select sb.modify_income (pii_id => @id, pvi_name => @name, " +
+                                                    "pii_income_source_id => @income_source_id, " +
+                                                    "pii_income_type_id => @income_type_id, " +
+                                                    "pni_amount => @amount, " +
+                                                    "pvi_currency_code => @currency_code, " +
+                                                    "pdi_income_date => @income_date, " +
+                                                    "pii_row_version => @row_version, " +
+                                                    "pvi_account_id => @account_id, " +
+                                                    "pii_planned_income_id => @planned_income_id)";
+                NpgsqlCommand cmd = new NpgsqlCommand(request, conn);
+                //SetCommandType(cmd, CommandType.Text);
+                cmd.Parameters.AddWithValue("id", NpgsqlDbType.Integer, id);
+                cmd.Parameters.AddWithValue("name", NpgsqlDbType.Varchar, income.name);
+                cmd.Parameters.AddWithValue("income_source_id", NpgsqlDbType.Integer, income.income_source_id);
+                cmd.Parameters.AddWithValue("income_type_id", NpgsqlDbType.Integer, income.income_type_id);
+                cmd.Parameters.AddWithValue("amount", NpgsqlDbType.Numeric, Convert.ToDecimal(income.amount));
+                cmd.Parameters.AddWithValue("currency_code", NpgsqlDbType.Varchar, income.currency_code);
+                cmd.Parameters.AddWithValue("income_date", NpgsqlDbType.Date, income.income_date);
+                cmd.Parameters.AddWithValue("row_version", NpgsqlDbType.Integer, income.row_version);
+                if (income.account_id == -1)
+                    cmd.Parameters.AddWithValue("account_id", NpgsqlDbType.Integer, DBNull.Value);
+                else
+                    cmd.Parameters.AddWithValue("account_id", NpgsqlDbType.Integer, income.account_id);
+                if (income.planned_income_id == -1)
+                    cmd.Parameters.AddWithValue("planned_income_id", NpgsqlDbType.Integer, DBNull.Value);
+                else
+                    cmd.Parameters.AddWithValue("planned_income_id", NpgsqlDbType.Integer, income.planned_income_id);
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+                DbConn.Instance.FreeConnection(conn);
+            }
+
+            return Redirect("/Income/Index");
+        }
+
+        public IActionResult Delete(int id, [Bind("id", "row_version")] Income income)
+        {
+            string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
+            using (conn)
+            {
+                string request = "call sb.income_delete(pii_income_id => @id, pii_row_version => @row_version)";
+                NpgsqlCommand cmd = new NpgsqlCommand(request, conn);
+                cmd.Parameters.AddWithValue("id", NpgsqlDbType.Integer, id);
+                cmd.Parameters.AddWithValue("row_version", NpgsqlDbType.Integer, income.row_version);
+                cmd.ExecuteNonQuery();
+                DbConn.Instance.FreeConnection(conn);
+            }
             return Redirect("/Income/Index");
         }
     }

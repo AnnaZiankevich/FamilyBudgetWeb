@@ -21,12 +21,6 @@ namespace WebAppPg.Models
         public string income_type_name { get; set; }
         public decimal amount { get; set; }
         public string currency_code { get; set; }
-
-        [Required(ErrorMessage = "Please enter the income date")]
-        //[DisplayName("Income date")]
-        //[DataType(DataType.Date)]
-        //[DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
-        //[Display(Order = 19)]
         public DateTime income_date { get; set; }
         public int row_version { get; set; }
     }

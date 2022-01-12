@@ -4,66 +4,86 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WebAppPg</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datetimepicker.min.css" />
+        <!-- <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />/> -->
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body style="background-color: #F6F8FA;">
+    <body style="background-color: #F6F8FA;">
 
-    <div class="vertical-nav bg-white" id="sidebar">
-        <div class="py-4 px-3 mb-4 bg-light">
-            <div class="media d-flex align-items-center">
-                <img loading="lazy" src="~/img/logo2.png" alt="..." width="80" height="80" class="mr-3 rounded-circle img-thumbnail shadow-sm">
-                <div class="media-body">
-                    <h4 class="m-0">Smarter</h4>
-                    <p class="font-weight-normal text-muted mb-0">The budget tracker</p>
+        <div class="vertical-nav bg-white" id="sidebar">
+            <div class="py-4 px-3 mb-4 bg-light">
+                <div class="media d-flex align-items-center">
+                    <img loading="lazy" src="~/img/logo2.png" alt="..." width="80" height="80" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+                    <div class="media-body">
+                        <h4 class="m-0">Smarter</h4>
+                        <p class="font-weight-normal text-muted mb-0">The budget tracker</p>
+                    </div>
                 </div>
             </div>
+
+            <ul class="nav flex-column bg-white mb-0">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="AccountOwner" asp-action="Index">Account owners</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Income" asp-action="Index">Income</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="LogOut">Log out</a>
+                </li>
+            </ul>
         </div>
 
-        <ul class="nav flex-column bg-white mb-0">
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="AccountOwner" asp-action="Index">Account owners</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Income" asp-action="Index">Income</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="LogOut">Log out</a>
-            </li>
-        </ul>
+        <div class="page-content p-5" id="content">
+            <!-- Toggle button -->
+    <button id="sidebarCollapse" type="button" class="btn btn-light rounded-pill shadow-sm px-4 mb-4" style="background-color: #f1efff; ">
+        <small class="text-uppercase font-weight-bold" id="toggleMessage"> Hide menu</small>
+    </button>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
 
-    <div class="page-content p-5" id="content">
-        <!-- Toggle button -->
-        <button id="sidebarCollapse" type="button" class="btn btn-light rounded-pill shadow-sm px-4 mb-4" style="background-color: #f1efff; ">
-            <small class="text-uppercase font-weight-bold" id="toggleMessage"> Hide menu</small>
-        </button>
-
+    <footer class="border-top footer text-muted">
         <div class="container">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
+            &copy; 2021 - WebAppPg - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-
-        <footer class="border-top footer text-muted">
-            <div class="container">
-                &copy; 2021 - WebAppPg - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-            </div>
-        </footer>
+    </footer>
     </div>
 
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        @await RenderSectionAsync("Scripts", required: false)
-</body>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/jquery-3.2.1.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/moment-with-locales.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'ru',
+                stepping: 10,
+                format: 'DD.MM.YYYY',
+                defaultDate: moment('01.11.2017').format('DD.MM.YYYY'),
+                daysOfWeekDisabled: [0, 6]
+            });
+            $('#datetimepicker2').datetimepicker({
+                format: 'DD.MM.YYYY',
+                defaultDate: moment('01.01.2022').format('DD.MM.YYYY')
+            });
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+    </body>
 </html>

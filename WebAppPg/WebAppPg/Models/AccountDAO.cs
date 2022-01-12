@@ -43,7 +43,7 @@ namespace WebAppPg.Models
         public static List<Account> GetAccountList(NpgsqlConnection conn)
         {
             conn = DbConn.Instance.GetUsersConnection();
-            NpgsqlCommand cmd = new NpgsqlCommand("select id, name from sb.accounts", conn);
+            NpgsqlCommand cmd = new NpgsqlCommand("select -1 as id, '-- no account --' as name union all select id, name from sb.accounts", conn);
             List<Account> accounts = new List<Account>();
             NpgsqlDataReader rdr = cmd.ExecuteReader();
             if (rdr.HasRows)

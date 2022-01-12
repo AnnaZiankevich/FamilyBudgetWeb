@@ -11,7 +11,7 @@ namespace WebAppPg.Models
         public static List<PlannedIncome> GetPlannedIncomeList(NpgsqlConnection conn)
         {
             conn = DbConn.Instance.GetUsersConnection();
-            NpgsqlCommand cmd = new NpgsqlCommand("select id, name from sb.planned_income", conn);
+            NpgsqlCommand cmd = new NpgsqlCommand("select -1 as id, '-- no planned income --' as name union all select id, name from sb.planned_income", conn);
             NpgsqlDataReader rdr = cmd.ExecuteReader();
             List<PlannedIncome> plannedIncome = new List<PlannedIncome>();
             if (rdr.HasRows)
