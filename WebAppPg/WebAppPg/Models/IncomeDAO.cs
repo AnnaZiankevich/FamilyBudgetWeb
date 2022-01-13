@@ -34,10 +34,7 @@ namespace WebAppPg.Models
                     plannedIncomeId = rdr.GetInt32(2);
                 else
                     plannedIncomeId = -1;              
-                if (!rdr.IsDBNull(3))
-                    accountId = rdr.GetInt32(3);
-                else
-                    accountId = -1;                
+                accountId = rdr.GetInt32(3);               
                 incomeSourceId = rdr.GetInt32(4);
                 incomeTypeId = rdr.GetInt32(5);
                 amount = rdr.GetDecimal(6);

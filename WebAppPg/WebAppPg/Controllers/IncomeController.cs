@@ -48,8 +48,8 @@ namespace WebAppPg.Controllers
                         amount = rdr.GetDecimal("amount"),
                         currency_code = rdr.GetString("currency_code"),
                         income_date = rdr.GetDateTime("income_date"),
-                        account_id = (rdr.IsDBNull("account_id") ? -1 : rdr.GetInt32("account_id")),
-                        account_name = (rdr.IsDBNull("account_id") ? "" : rdr.GetString("account_name")),
+                        account_id = rdr.GetInt32("account_id"),
+                        account_name = rdr.GetString("account_name"),
                         row_version = rdr.GetInt32("row_version")
                     };
 
@@ -71,7 +71,6 @@ namespace WebAppPg.Controllers
             income.incomeSoursesList = IncomeSourceDAO.GetIncomeSourceList(conn);
             income.incomeTypesList = IncomeTypeDAO.GetIncomeTypeList(conn);
             income.accountList = AccountDAO.GetAccountList(conn);
-            income.account_id = -1;
             income.currencyCodesList = CurrencyCodeDAO.GetCurrCodesList(conn);
             DbConn.Instance.FreeConnection(conn);
             return View(income);
@@ -92,7 +91,7 @@ namespace WebAppPg.Controllers
                                                     "pvi_currency_code => @currency_code, " +
                                                     "pdi_income_date => @income_date, " +
                                                     "pii_row_version => @row_version, " +
-                                                    "pvi_account_id => @account_id, " +
+                                                    "pii_account_id => @account_id, " +
                                                     "pii_planned_income_id => @planned_income_id)";
                 NpgsqlCommand cmd = new NpgsqlCommand(request, conn);
                 //SetCommandType(cmd, CommandType.Text);
@@ -104,10 +103,7 @@ namespace WebAppPg.Controllers
                 cmd.Parameters.AddWithValue("currency_code", NpgsqlDbType.Varchar, income.currency_code);
                 cmd.Parameters.AddWithValue("income_date", NpgsqlDbType.Date, income.income_date);
                 cmd.Parameters.AddWithValue("row_version", NpgsqlDbType.Integer, income.row_version);
-                if (income.account_id == -1)
-                    cmd.Parameters.AddWithValue("account_id", NpgsqlDbType.Integer, DBNull.Value);
-                else
-                    cmd.Parameters.AddWithValue("account_id", NpgsqlDbType.Integer, income.account_id);
+                cmd.Parameters.AddWithValue("account_id", NpgsqlDbType.Integer, income.account_id);
                 if (income.planned_income_id == -1)
                   cmd.Parameters.AddWithValue("planned_income_id", NpgsqlDbType.Integer, DBNull.Value);
                 else
@@ -150,7 +146,7 @@ namespace WebAppPg.Controllers
                                                     "pvi_currency_code => @currency_code, " +
                                                     "pdi_income_date => @income_date, " +
                                                     "pii_row_version => @row_version, " +
-                                                    "pvi_account_id => @account_id, " +
+                                                    "pii_account_id => @account_id, " +
                                                     "pii_planned_income_id => @planned_income_id)";
                 NpgsqlCommand cmd = new NpgsqlCommand(request, conn);
                 //SetCommandType(cmd, CommandType.Text);

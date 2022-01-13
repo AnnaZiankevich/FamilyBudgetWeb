@@ -1,0 +1,47 @@
+﻿@model WebAppPg.Models.PaymentList
+@{
+    ViewBag.Title = "List of accounts";
+}
+
+<div class="pb-1">
+    <h3>List of payments</h3>
+</div>
+
+<p><a class="btn" href="/Payment/Add" style="background-color: #55c9a9; color: #ebfff9">Add new</a></p>
+
+<table class="table table-bordered table-striped table-hover ">
+    <thead>
+        <tr style="background-color: #f0e8ff;">
+            <th>Name</th>
+            <th>Account</th>
+            <th>Planned payment</th>
+            <th>Payment receiver</th>
+            <th>Payment type</th>
+            <th>Amount</th>
+            <th>Currency</th>
+            <th>Payment date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody style="background-color: #fdfcff;">
+        @foreach (var payment in Model.paymentList)
+        {
+            <tr>
+                <td>@payment.name</td>
+                <td>@payment.account_name</td>
+                <td>@payment.planned_payment_name</td>
+                <td>@payment.payment_receiver_name</td>
+                <td>@payment.payment_type_name</td>
+                <td>@payment.amount</td>
+                <td>@payment.currency_code</td>
+                <td>@payment.payment_date</td>
+                <td>
+                    <a class="btn" href="/Payment/Edit/@payment.id" style="background-color: #55c9a9; color: #ebfff9 ">Edit</a>
+                    <a class="btn" href="/Payment/Delete/@payment.id?row_version=@payment.row_version" style="background-color: #55c9a9; color: #ebfff9 ">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><a class="btn" href="/Payment/Add" style="background-color: #55c9a9; color: #ebfff9">Add new</a></p>
