@@ -182,7 +182,7 @@ namespace WebAppPg.Controllers
                 cmd.ExecuteNonQuery();
                 DbConn.Instance.FreeConnection(conn);
             }
-            return Redirect("/Income/Index");
+            return Redirect("/Payment/Index");
         }
     }
 }

@@ -7,8 +7,9 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datetimepicker.min.css" />
-        <!-- <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />/> -->
+    <!-- <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />/> -->
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
     <body style="background-color: #F6F8FA;">
 
@@ -31,10 +32,13 @@
                     <a class="nav-link text-dark" asp-area="" asp-controller="AccountOwner" asp-action="Index">Account owners</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Income" asp-action="Index">Incomes</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Income" asp-action="Index">Income</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="Index">Payments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="PlannedIncome" asp-action="Index">Planned income</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -74,16 +78,38 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script type="text/javascript">
         $(function () {
-            $('#datetimepicker1').datetimepicker({
-                locale: 'ru',
-                stepping: 10,
+            $('#datetimepicker2, #datetimepicker3, #datetimepicker4').datetimepicker({
                 format: 'DD.MM.YYYY',
-                defaultDate: moment('01.11.2017').format('DD.MM.YYYY'),
-                daysOfWeekDisabled: [0, 6]
+                defaultDate: moment('01.01.2022').format('DD.MM.YYYY'),
+                icons: {
+                    time: 'fa fa-clock-o',
+                    date: 'fa fa-calendar',
+                    up: 'fa fa-chevron-up',
+                    down: 'fa fa-chevron-down',
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
+                    today: 'fa fa-arrows ',
+                    clear: 'fa fa-trash',
+                    close: 'fa fa-times'
+                }
             });
-            $('#datetimepicker2').datetimepicker({
-                format: 'DD.MM.YYYY',
-                defaultDate: moment('01.01.2022').format('DD.MM.YYYY')
+        });
+
+        $(function () {
+            $("#setDate1").click(function () {
+                $('#datetimepicker2').data("DateTimePicker").date(null);
+            });
+        });
+
+        $(function () {
+            $("#setDate2").click(function () {
+                $('#datetimepicker3').data("DateTimePicker").date(null);
+            });
+        });
+
+        $(function () {
+            $("#setDate3").click(function () {
+                $('#datetimepicker4').data("DateTimePicker").date(null);
             });
         });
     </script>
