@@ -18,9 +18,9 @@ namespace WebAppPg.Models
         public decimal amount { get; set; }
         public string currency_code { get; set; }
         public List<CurrencyCode> currencyCodesList { get; set; }
-        public DateTime planned_date { get; set; }
-        public DateTime start_date { get; set; }
-        public DateTime end_date { get; set; }
+        public DateTime? planned_date { get; set; }
+        public DateTime? start_date { get; set; }
+        public DateTime? end_date { get; set; }
         public int row_version { get; set; }
     }
 }
