@@ -1,0 +1,124 @@
+﻿@model WebAppPg.Models.TotalModelList
+@{decimal incTotal = 0; }
+@{string incTotalText = ""; }
+@{decimal paymTotal = 0; }
+@{string paymTotalText = ""; }
+@{decimal total = 0; }
+@{string totalText = ""; }
+@{
+    ViewBag.Title = "Total";
+}
+
+<div class="pb-1">
+    <h3>Total</h3>
+</div>
+<div class="d-flex flex-row-reverse" style="margin-bottom: 1%;">
+    <div style="width: 20%; height: 20%; margin-left: 1%;">
+        @Html.DropDownListFor(model => model.period_id, new SelectList(Model.periodList, "id", "name"),
+  new { @class = "form-control" })
+    </div>
+    <div style="width: 20%; height: 20%; margin-left: 1%;">
+        @Html.DropDownListFor(model => model.currency_code, new SelectList(Model.currencyCodelist, "code", "code"),
+  new { @class = "form-control" })
+    </div>
+    <div style="width: 20%; height: 20%;">
+        @Html.DropDownListFor(model => model.account_id, new SelectList(Model.accountList, "id", "name"),
+  new { @class = "form-control" })
+    </div>
+</div>
+<div style="display: flex;">
+    <div>
+        <table class="table table-bordered table-striped table-hover ">
+            <thead>
+                <tr style="background-color: #f0e8ff;">
+                    <th>Name</th>
+                    <th>Income date</th>
+                    <th>Income source</th>
+                    <th>Amount</th>
+                    <th>Currency</th>
+                    <th>Is planned?</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: #fdfcff;">
+                @if (Model.totalIncomeModelList.Count() > 0)
+                {
+                    @foreach (var income in Model.totalIncomeModelList)
+                    {
+                        <tr>
+                            <td>@income.income_name</td>
+                            <td>@income.income_date</td>
+                            <td>@income.income_amount</td>
+                            <td>@income.income_currency_code</td>
+                            <td>@income.income_source_name</td>
+                            <td>
+                                <div class="ml-4">
+                                    <input class="form-check-input" id="flexCheckCheckedDisabled" type="checkbox" checked=@income.is_income_planned disabled>
+                                    <label class="form-check-label" for="flexCheckCheckedDisabled">
+                                        Planned
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        incTotal = +Convert.ToDecimal(income.income_amount);
+                        incTotalText = incTotal.ToString() + " " + income.income_currency_code;
+                    }
+                }
+                else
+                {
+                    <tr><td>No income yet</td></tr>
+                }
+            </tbody>
+        </table>
+        <p><input name="incomeSum" type="text" style="width: 30%; height: 20%;" value="@incTotalText" /></p>
+    </div>
+
+    <div>
+        <table class="table table-bordered table-striped table-hover " style="margin-left: 1%;">
+            <thead>
+                <tr style="background-color: #f0e8ff;">
+                    <th>Name</th>
+                    <th>Payment date</th>
+                    <th>Payment receiver</th>
+                    <th>Amount</th>
+                    <th>Currency</th>
+                    <th>Is planned?</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: #fdfcff;">
+                @if (Model.totalPaymentsModelList.Count() > 0)
+                {
+                    @foreach (var payment in Model.totalPaymentsModelList)
+                    {
+                        <tr>
+                            <td>@payment.payment_name</td>
+                            <td>@payment.payment_date</td>
+                            <td>@payment.payment_receiver_name</td>
+                            <td>@payment.payment_amount</td>
+                            <td>@payment.payment_currency_code</td>
+                            <td>
+                                <div class="ml-4">
+                                    <input class="form-check-input" id="flexCheckCheckedDisabled" type="checkbox" checked=@payment.is_payment_planned disabled>
+                                    <label class="form-check-label" for="flexCheckCheckedDisabled">
+                                        Planned
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        paymTotal = +Convert.ToDecimal(payment.payment_amount);
+                        paymTotalText = paymTotal.ToString() + " " + payment.payment_currency_code;
+                    }
+                }
+                else
+                {
+                    <tr><td>No payments yet</td></tr>
+                }
+            </tbody>
+        </table>
+        <p><input name="paymentsSum" style="width: 30%; height: 20%;" type="text" value="@paymTotalText" /></p>
+    </div>
+</div>
+<div class="d-flex flex-row-reverse">
+    @{total = incTotal - paymTotal; }
+    @{totalText = total.ToString() + " " + Model.currency_code; }
+    <input name="total" style="width: 30%; height: 20%;" type="text" value="@totalText" />
+</div>
