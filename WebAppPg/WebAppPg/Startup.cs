@@ -12,6 +12,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAppPg.Models;
 using System.Text;
+using Npgsql;
+using NpgsqlTypes;
+using System.Data;
+using System.Security.Claims;
 
 namespace WebAppPg
 {
