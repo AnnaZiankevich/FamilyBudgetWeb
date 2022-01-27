@@ -16,6 +16,8 @@ using Npgsql;
 using NpgsqlTypes;
 using System.Data;
 using System.Security.Claims;
+using Quartz;
+using Quartz.Impl;
 
 namespace WebAppPg
 {
@@ -35,6 +37,8 @@ namespace WebAppPg
               .AddEnvironmentVariables();
             Configuration = builder.Build(); // load all file config to Configuration property 
             AppSettings.Instance.SetConfiguration(Configuration);
+
+            ExchangeRatesRefreshSchedule.Start();
         }
 
         public IConfiguration Configuration { get; }
@@ -52,7 +56,20 @@ namespace WebAppPg
 
             services.AddControllersWithViews();
             services.AddSingleton(Configuration);
-            DbConn.CreateInstance(Configuration);
+
+            /*services.AddQuartz(q =>
+            {
+                // base quartz scheduler, job and trigger configuration
+            });
+
+            // ASP.NET Core hosting
+            services.AddQuartzServer(options =>
+            {
+                // when shutting down we want jobs to complete gracefully
+                options.WaitForJobsToComplete = true;
+            });*/
+
+            DbConn.CreateInstance(Configuration); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -30,8 +30,8 @@
     </form>
 </div>
 <div style="display: flex;">
-    <div>
-        <table class="table table-bordered table-striped table-hover ">
+    <div style="width: 49%;">
+        <table class="table table-bordered table-striped table-hover" >
             <thead>
                 <tr style="background-color: #f0e8ff;">
                     <th>Name</th>
@@ -74,8 +74,8 @@
         </table>        
     </div>
 
-    <div>
-        <table class="table table-bordered table-striped table-hover " style="margin-left: 1%;">
+    <div style="width:49%; margin-left: 0.7%;">
+        <table class="table table-bordered table-striped table-hover " style="width:49%; margin-left: 2%;">
             <thead>
                 <tr style="background-color: #f0e8ff;">
                     <th>Name</th>
@@ -119,13 +119,17 @@
     </div>
 </div>
 
-<div style="margin-top: 1%;">
-    <p><input name="incomeSum" style="width: 30%; height: 20%;" value="@incTotalText" /></p>
-    <p><input name="paymentsSum" style="width: 30%; height: 20%; margin-left: 30%;" type="text" value="@paymTotalText" /></p>
+<div style="margin-top: 1%; width:100%;" class="d-flex">
+    <div style="width: 20%; height: 20%; margin-left: 29%;">
+        <input name="incomeSum" style="width: 100%; height: 20%;" value="@incTotalText" />
+    </div>
+    <div style="width: 20%; height: 20%; margin-left: 31%;">
+        <input name="paymentsSum" style="width: 100%; height: 20%; " type="text" value="@paymTotalText" />
+    </div>
 </div>
 
 <div class="d-flex flex-row-reverse">
     @{total = incTotal - paymTotal; }
     @{totalText = total.ToString() + " " + Model.currency_code; }
-    <input name="total" style="width: 30%; height: 20%; margin-top: 3%;" type="text" value="@totalText" />
+    <input name="total" style="width: 20%; height: 20%; margin-top: 3%;" type="text" value="@totalText" />
 </div>

@@ -20,25 +20,9 @@ namespace WebAppPg.Controllers
         [HttpGet]
         public IActionResult List()
         {
-            string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
-            NpgsqlCommand incomeSelCmd = new NpgsqlCommand("select dd::date from sb.app_settings s, " +
-                  "lateral generate_series(s.app_life_start_date, now()::date, interval '1 day') as dd " +
-                  "where not exists(select 1 from sb.exchange_rates where rate_date = dd::date and currency_to = 'BYN')", conn);
-            string URL = "https://www.nbrb.by/api/exrates/rates/USD?parammode=2&ondate=";
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            string content = (new StreamReader(response.GetResponseStream())).ReadToEnd();
-
-            NpgsqlCommand callCmd = new NpgsqlCommand("call sbudget.exchange_rate_create_or_update(_currency_to => :curr," +
-                                                                                                    " _rate_info => :info)", conn);
-            callCmd.Parameters.AddWithValue("curr", NpgsqlDbType.Varchar, "BYN");
-            callCmd.Parameters.AddWithValue("info", NpgsqlDbType.Json, content);
-            callCmd.ExecuteNonQuery();
-
             int period_id = 202112;
             int account_id = -1;
-            string currency_code = "USD";
+            string currency_code = "BYN";
             return processRequest(period_id, account_id, currency_code);
         }
 
@@ -51,8 +35,8 @@ namespace WebAppPg.Controllers
         private IActionResult processRequest(int period_id, int account_id, string currency_code)
         {
             string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-
             NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
+
             totalList.periodList = PeriodDAO.GetPeriodList(conn);
             totalList.period_id = period_id;
             totalList.accountList = AccountDAO.GetAccountListTotal(conn);
