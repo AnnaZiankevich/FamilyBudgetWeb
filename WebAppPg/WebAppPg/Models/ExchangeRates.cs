@@ -27,7 +27,7 @@ namespace WebAppPg.Models
             NpgsqlConnection conn = DbConn.Instance.GetUsersConnection();
             datesDataTable.Load(new NpgsqlCommand("select dd::date from sb.app_settings s, " +
                   "lateral generate_series(s.app_life_start_date, now()::date, interval '1 day') as dd " +
-                  "where not exists(select 1 from sbudget.exchange_rates where rate_date = dd::date and currency_to = 'BYN')",
+                  "where not exists(select 1 from sb.exchange_rates where rate_date = dd::date and currency_to = 'BYN')",
                   conn).ExecuteReader());
             Debug.WriteLine("****************** DataTable Loaded ********************");
             foreach (DataRow r in datesDataTable.Rows)
