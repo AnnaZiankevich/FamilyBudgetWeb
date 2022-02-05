@@ -1,0 +1,45 @@
+﻿@model WebAppPg.Models.InteraccountTransactionListModel
+@{
+    ViewBag.Title = "List of accounts";
+}
+
+<div class="pb-1">
+    <h3>List of interaccount transactions</h3>
+</div>
+
+<p><a class="btn" href="/InteraccountTransaction/AddFirstStage" style="background-color: #55c9a9; color: #ebfff9">Add new</a></p>
+
+<table class="table table-bordered table-striped table-hover ">
+    <thead>
+        <tr style="background-color: #f0e8ff;">
+            <th>Transaction date</th>
+            <th>Source account</th>
+            <th>Source amount</th>
+            <th>Source currency code</th>
+            <th>Target account</th>
+            <th>Target amount</th>
+            <th>Target currency code</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody style="background-color: #fdfcff;">
+        @foreach (var interAcc in Model.interaccountTransactionList)
+        {
+            <tr>
+                <td>@interAcc.transaction_date</td>
+                <td>@interAcc.source_account_name</td>
+                <td>@interAcc.source_amount</td>
+                <td>@interAcc.source_currency_code</td>
+                <td>@interAcc.target_account_name</td>
+                <td>@interAcc.target_amount</td>
+                <td>@interAcc.target_currency_code</td>
+                <td>
+                    <a class="btn" href="/InteraccountTransaction/Edit/@interAcc.id" style="background-color: #55c9a9; color: #ebfff9 ">Edit</a>
+                    <a class="btn" href="/InteraccountTransaction/Delete/@interAcc.id?row_version=@interAcc.row_version" style="background-color: #55c9a9; color: #ebfff9 ">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><a class="btn" href="/InteraccountTransaction/AddFirstStage" style="background-color: #55c9a9; color: #ebfff9">Add new</a></p>

@@ -1,0 +1,50 @@
+﻿@model WebAppPg.Models.BalancesListModel
+
+@{
+    ViewBag.Title = "Balances";
+}
+
+<div class="pb-1">
+    <h3>Balances</h3>
+</div>
+<div style="margin-bottom: 1%;">
+    <form action="/Balance/List" method="post" style="width: 100%;" class="d-flex flex-row-reverse">
+        <input type="submit" class="btn form-group" style="background-color: #55c9a9; color: #ebfff9; width: 10%; margin-left: 1%;" value="Refresh" />
+        <div class="form-group" style="width: 20%; height: 20%; margin-left: 1%;">
+            @Html.DropDownListFor(model => model.period_id, new SelectList(Model.periodList, "id", "name"),
+      new { @class = "form-control", @name = "period_id" })
+        </div>
+        <div class="form-group" style="width: 20%; height: 20%; margin-left: 1%;">
+            @Html.DropDownListFor(model => model.currency_code, new SelectList(Model.currencyCodelist, "code", "code"),
+      new { @class = "form-control", @name = "currency_code" })
+        </div>
+        <div class="form-group" style="width: 20%; height: 20%;">
+            @Html.DropDownListFor(model => model.account_id, new SelectList(Model.accountList, "id", "name"),
+      new { @class = "form-control", @name = "account_id" })
+        </div>
+    </form>
+</div>
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr style="background-color: #f0e8ff;">
+            <th>Amount</th>
+            <th>Currency</th>
+        </tr>
+    </thead>
+    <tbody style="background-color: #fdfcff;">
+        @if (Model.balancesList.Count() > 0)
+        {
+            @foreach (var balance in Model.balancesList)
+            {
+                <tr>
+                    <td>@balance.amount</td>
+                    <td>@balance.currency_code</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td>No balances yet</td></tr>
+        }
+    </tbody>
+</table>

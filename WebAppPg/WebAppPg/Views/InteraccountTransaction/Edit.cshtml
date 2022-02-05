@@ -1,0 +1,61 @@
+﻿@model WebAppPg.Models.InteraccountTransaction
+@{
+    ViewBag.Title = "Add";
+}
+
+<h3>Edit interaccount transaction</h3>
+<form action="/InteraccountTransaction/Edit/@Model.id" method="post">
+
+    <div class="d-flex" style="width: 100%;">
+
+        <div style="width: 30%;">
+            <p></p>
+
+            <h4>Source</h4>
+            <div style="width: 100%; height: 20%;">
+                @Html.DropDownListFor(model => model.source_account_id, new SelectList(Model.sourceAccountList, "id", "name"),
+                new { @class = "form-control" })
+            </div>
+
+            <p style="width: 100%; height: 20%; margin-top: 5%;"><input name="source_amount" value="@Model.source_amount" type="text" style="width: 100%; height: 100%;" placeholder="Source amount" /></p>
+
+            <div style="width: 100%; height: 20%; margin-top: 1%;">
+                @Html.DropDownListFor(model => model.source_currency_code, new SelectList(Model.sourceCurrCodesList, "code", "code"),
+                new { @class = "form-control" })
+            </div>
+        </div>
+
+        <img src="~/img/exchange.png" style="width: 10%; height: 10%; margin-left: 3%; margin-right: 2%; margin-top: 8.5%; " />
+
+        <div style="width: 30%;">
+            <p></p>
+
+            <h4>Target</h4>
+
+            <div style="width: 100%; height: 20%;">
+                @Html.DropDownListFor(model => model.target_account_id, new SelectList(Model.targetAccountList, "id", "name"),
+                new { @class = "form-control" })
+            </div>
+
+            <p style="width: 100%; height: 20%; margin-top: 5%;"><input name="target_amount" value="@Model.target_amount" type="text" style="width: 100%; height: 100%;" placeholder="Target amount" /></p>
+
+            <div style="width: 100%; height: 20%; margin-top: 1%; ">
+                @Html.DropDownListFor(model => model.target_currency_code, new SelectList(Model.targetCurrCodesList, "code", "code"),
+                new { @class = "form-control" })
+            </div>
+
+        </div>
+    </div>
+
+    <p>
+        <input type="text" class="form-control" value="@Model.transaction_date" id="datetimepicker2" name="transaction_date" style="width: 20%; margin-left: 27%; margin-top: 5%;">
+    </p>
+
+    <input name="row_version" type="hidden" value="@Model.row_version">
+
+    <p>
+        <input type="submit" class="btn" style="background-color: #55c9a9; color: #ebfff9; width: 10%;" value="Save" />
+        <a class="btn" href="/InteraccountTransaction/Index" style="background-color: #55c9a9; color: #ebfff9; width: 10%;">Cancel</a>
+    </p>
+
+</form>
