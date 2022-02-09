@@ -15,7 +15,13 @@
             <th>Name</th>
             <th>Account</th>
             <th>Planned income</th>
-            <th>Income sourse</th>
+            <th>Income source 
+                <a class="btn btn-sm align-items-center align-middle" href="/IncomeSource/Add" role="button" style="font-size: 18px; height: 33px; background-color: #55c9a9; color: #ebfff9;">
+                    <span class="my-0" style="text-align: center; vertical-align: central;">
+                      +
+                    </span>
+                </a>
+            </th>
             <th>Income type</th>
             <th>Amount</th>
             <th>Currency</th>
@@ -36,8 +42,8 @@
                 <td>@income.currency_code</td>
                 <td>@income.income_date</td>
                 <td>
-                    <a class="btn" href="/Income/Edit/@income.id" style="background-color: #55c9a9; color: #ebfff9 ">Edit</a>
-                    <a class="btn" href="/Income/Delete/@income.id?row_version=@income.row_version" style="background-color: #55c9a9; color: #ebfff9 ">Delete</a>
+                    <a class="btn" href="/Income/Edit/@income.id" style="background-color: #55c9a9; color: #ebfff9; ">Edit</a>
+                    <a class="btn" href="/Income/Delete/@income.id?row_version=@income.row_version" style="background-color: #55c9a9; color: #ebfff9; ">Delete</a>
                 </td>
             </tr>
         }

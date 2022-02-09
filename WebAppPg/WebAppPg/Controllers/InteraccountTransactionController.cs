@@ -101,7 +101,9 @@ namespace WebAppPg.Controllers
             interAccTransaction.sourceAccountList = AccountDAO.GetAccountList(conn);
             interAccTransaction.source_account_id = source_account_id;
             interAccTransaction.targetAccountList = AccountDAO.GetAccountList(conn);
+            interAccTransaction.source_currency_code = source_currency_code;
             interAccTransaction.target_account_id = target_account_id;
+            interAccTransaction.source_amount = source_amount;
             interAccTransaction.targetCurrCodesList = CurrencyCodeDAO.GetCurrCodesList(conn);
             interAccTransaction.target_currency_code = GetCurrencyCodeForAccount(target_account_id);
             interAccTransaction.transaction_date = transaction_date;

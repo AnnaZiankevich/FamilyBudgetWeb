@@ -12,7 +12,7 @@ namespace WebAppPg.Models
         public int account_id { get; set; }
         public List<Account> accountList { get; set; }
         public int income_source_id { get; set; }
-        public List<IncomeSourse> incomeSoursesList { get; set; }
+        public List<IncomeSource> incomeSoursesList { get; set; }
         public int income_type_id { get; set; }
         public List<IncomeType> incomeTypesList { get; set; }
         public decimal amount { get; set; }

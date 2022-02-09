@@ -6,34 +6,36 @@
 <h3>Add new interaccount transaction</h3>
 <form action="/InteraccountTransaction/AddSecondStage?transaction_date=@Model.transaction_date&source_account_id=@Model.source_account_id&target_account_id=@Model.target_account_id&source_amount=@Model.source_amount&source_currency_code=@Model.source_currency_code" method="post">
 
-    <h4>From</h4>
-    <div style="width: 100%; height: 20%;">
-        @Html.DropDownListFor(model => model.source_account_id, new SelectList(Model.sourceAccountList, "id", "name"),
-        new { @class = "form-control", @name = "source_account_id" })
+    <div style="margin-top: 2%;">
+        <h4>From</h4>
+        <div style="width: 30%; height: 20%;">
+            @Html.DropDownListFor(model => model.source_account_id, new SelectList(Model.sourceAccountList, "id", "name"),
+            new { @class = "form-control", @name = "source_account_id" })
+        </div>
+
+        <h4 style="margin-top: 1%;">To</h4>
+        <div style="width: 30%; height: 20%;">
+            @Html.DropDownListFor(model => model.target_account_id, new SelectList(Model.targetAccountList, "id", "name"),
+            new { @class = "form-control", @name = "target_account_id" })
+        </div>
+
+        <h4 style="margin-top: 1%;">Recepient gets</h4>
+        <p style="width: 30%; height: 20%;"><input name="target_amount" type="text" style="width: 100%; height: 100%;" value="@Model.target_amount" /></p>
+
+        <div style="width: 30%; height: 20%; margin-top: 1%;">
+            @Html.DropDownListFor(model => model.target_currency_code, new SelectList(Model.targetCurrCodesList, "code", "code"),
+            new { @class = "form-control", @name = "target_currency_code" })
+        </div>
+
+        <h4 style="margin-top: 1%;">On</h4>
+        <p>
+            <input type="text" class="form-control" id="datetimepicker2" name="transaction_date" style="width: 30%;" value="@Model.transaction_date">
+        </p>
+
+        <p>
+            <input type="submit" class="btn" style="background-color: #55c9a9; color: #ebfff9; width: 10%;" value="Confirm" />
+            <a class="btn" href="/InteraccountTransaction/Index" style="background-color: #55c9a9; color: #ebfff9; width: 10%;">Cancel</a>
+        </p>
     </div>
-
-    <h4>To</h4>
-    <div style="width: 100%; height: 20%; margin-top: 20%;">
-        @Html.DropDownListFor(model => model.target_account_id, new SelectList(Model.targetAccountList, "id", "name"),
-        new { @class = "form-control", @name = "target_account_id" })
-    </div>
-
-    <h4>Recepient gets</h4>
-    <p style="width: 100%; height: 20%; margin-top: 5%;"><input name="target_amount" type="text" style="width: 100%; height: 100%;" value="@Model.target_amount" /></p>
-
-    <div style="width: 100%; height: 20%; margin-top: 1%;">
-        @Html.DropDownListFor(model => model.target_currency_code, new SelectList(Model.targetCurrCodesList, "code", "code"),
-        new { @class = "form-control", @name= "target_currency_code" })
-    </div>
-
-    <h4>On</h4>
-    <p>
-        <input type="text" class="form-control" id="datetimepicker2" name="transaction_date" style="width: 20%; margin-left: 27%; margin-top: 5%;" value="@Model.transaction_date">
-    </p>
-
-    <p>
-        <input type="submit" class="btn" style="background-color: #55c9a9; color: #ebfff9; width: 10%;" value="Confirm" />
-        <a class="btn" href="/InteraccountTransaction/Index" style="background-color: #55c9a9; color: #ebfff9; width: 10%;">Cancel</a>
-    </p>
 
 </form>

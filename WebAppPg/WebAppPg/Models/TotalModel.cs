@@ -11,7 +11,7 @@ namespace WebAppPg.Models
         public string income_name { get; set; }
         public DateTime income_date { get; set; }
         public int income_source_id { get; set; }
-        public List<IncomeSourse> incomeSoursesList { get; set; }      
+        public List<IncomeSource> incomeSoursesList { get; set; }      
         public decimal income_amount { get; set; }
         public string income_currency_code { get; set; }
         public List<CurrencyCode> incCurrencyCodesList { get; set; }

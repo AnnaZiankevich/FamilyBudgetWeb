@@ -43,7 +43,7 @@ namespace WebAppPg.Models
         public static List<Account> GetAccountList(NpgsqlConnection conn)
         {
             conn = DbConn.Instance.GetUsersConnection();
-            NpgsqlCommand cmd = new NpgsqlCommand("select id, name from sb.accounts", conn);
+            NpgsqlCommand cmd = new NpgsqlCommand("select id, name from sb.accounts order by name", conn);
             List<Account> accounts = new List<Account>();
             NpgsqlDataReader rdr = cmd.ExecuteReader();
             if (rdr.HasRows)

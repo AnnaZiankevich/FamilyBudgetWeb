@@ -11,7 +11,7 @@ namespace WebAppPg.Models
         public static List<Period> GetPeriodList(NpgsqlConnection conn)
         {
             conn = DbConn.Instance.GetUsersConnection();
-            NpgsqlCommand cmd = new NpgsqlCommand("select id, name from sb.periods", conn);
+            NpgsqlCommand cmd = new NpgsqlCommand("select id, name from sb.periods order by name", conn);
             NpgsqlDataReader rdr = cmd.ExecuteReader();
             List<Period> period = new List<Period>();
             if (rdr.HasRows)

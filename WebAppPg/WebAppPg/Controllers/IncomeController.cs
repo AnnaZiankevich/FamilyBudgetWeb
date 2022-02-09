@@ -68,7 +68,7 @@ namespace WebAppPg.Controllers
             Income income = new Income();
             income.plannedIncomesList = PlannedIncomeDAO.GetPlannedIncomeList(conn);
             income.planned_income_id = -1;
-            income.incomeSoursesList = IncomeSourceDAO.GetIncomeSourceList(conn);
+            income.incomeSourcesList = IncomeSourceDAO.GetIncomeSourceList(conn);
             income.incomeTypesList = IncomeTypeDAO.GetIncomeTypeList(conn);
             income.accountList = AccountDAO.GetAccountList(conn);
             income.currencyCodesList = CurrencyCodeDAO.GetCurrCodesList(conn);
@@ -123,7 +123,7 @@ namespace WebAppPg.Controllers
             NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
             Income income = IncomeDAO.FindById(id);
             income.plannedIncomesList = PlannedIncomeDAO.GetPlannedIncomeList(conn);
-            income.incomeSoursesList = IncomeSourceDAO.GetIncomeSourceList(conn);
+            income.incomeSourcesList = IncomeSourceDAO.GetIncomeSourceList(conn);
             income.incomeTypesList = IncomeTypeDAO.GetIncomeTypeList(conn);
             income.accountList = AccountDAO.GetAccountList(conn);
             income.currencyCodesList = CurrencyCodeDAO.GetCurrCodesList(conn);

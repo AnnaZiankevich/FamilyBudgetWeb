@@ -14,7 +14,7 @@ namespace WebAppPg.Models
         public int planned_income_id { get; set; }
         public List<PlannedIncome> plannedIncomesList { get; set; }
         public int income_source_id { get; set; }
-        public List<IncomeSourse> incomeSoursesList { get; set; }
+        public List<IncomeSource> incomeSourcesList { get; set; }
         public int income_type_id { get; set; }
         public List<IncomeType> incomeTypesList { get; set; }
         public decimal amount { get; set; }
@@ -24,12 +24,12 @@ namespace WebAppPg.Models
         public int row_version { get; set; }
     }
 
-    public class IncomeSourse
+    public class IncomeSource
     {
         public int id { get; set; }
         public string name { get; set; }
         public Boolean is_active { get; set; }
-        public int row_version { get; set; }
+        //public int row_version { get; set; }
     }
 
     public class IncomeType
@@ -37,6 +37,6 @@ namespace WebAppPg.Models
         public int id { get; set; }
         public string name { get; set; }
         public Boolean is_regular { get; set; }
-        public int row_version { get; set; }
+        //public int row_version { get; set; }
     }
 }
