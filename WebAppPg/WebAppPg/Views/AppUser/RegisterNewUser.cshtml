@@ -1,16 +1,21 @@
-﻿@model UserModel
+﻿@model AppUser
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Register new user";
 }
 
 <h1>@ViewData["Title"]</h1>
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="PerformLogin" method="post">
-            <h4>Use a local account to log in.</h4>
+        <form asp-controller="AppUser" asp-action="RegisterNewUser" method="post">
+            <h4>Create an account.</h4>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Login"></label>
                 <input asp-for="Login" class="form-control" />
@@ -22,8 +27,10 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-lg btn-block" style="background-color: #55c9a9; color: #ebfff9; ">Log in</button>
-                <a class="btn btn-lg btn-block" href="/AppUser/RegisterNewUser" style="background-color: #55c9a9; color: #ebfff9;">Register new user</a>
+                Is active? @Html.CheckBox("is_active", @Model.Is_active) 
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-lg btn-block" style="background-color: #55c9a9; color: #ebfff9 ">Register</button>
             </div>
         </form>
     </div>
