@@ -117,6 +117,89 @@ namespace WebAppPg.Controllers
         }
 
         [HttpGet]
+        public IActionResult AddFromPlannedIncomeFirstStage()
+        {
+            string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
+            Income income = new Income();
+            income.plannedIncomesList = PlannedIncomeDAO.GetPlannedIncomeListForPeriod(conn);
+            DbConn.Instance.FreeConnection(conn);
+            return View(income);
+        }
+        //[Bind("planned_income_id")]
+        [HttpPost]
+        public IActionResult AddFromPlannedIncomeFirstStage(int planned_income_id)
+        {
+            return RedirectToAction("AddFromPlannedIncomeSecondStage",
+                       new
+                       {
+                           id = planned_income_id
+                       });
+        }
+
+        [HttpGet]
+        public IActionResult AddFromPlannedIncomeSecondStage(int id) //string name, int income_source_id, int income_type_id, decimal amount, string currency_code, DateTime income_date, int account_id
+        {
+            string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
+            PlannedIncome plannedIncome = PlannedIncomeDAO.FindById(id);
+            Income income = new Income();
+            income.plannedIncomesList = PlannedIncomeDAO.GetPlannedIncomeListForPeriod(conn);
+            income.planned_income_id = plannedIncome.id;
+            income.planned_income_name = plannedIncome.name;
+            income.name = plannedIncome.name;
+            income.incomeSourcesList = IncomeSourceDAO.GetIncomeSourceList(conn);
+            income.income_source_id = plannedIncome.income_source_id;
+            income.incomeTypesList = IncomeTypeDAO.GetIncomeTypeList(conn);
+            income.income_type_id = plannedIncome.income_type_id;
+            income.amount = plannedIncome.amount;
+            income.currencyCodesList = CurrencyCodeDAO.GetCurrCodesList(conn);
+            income.currency_code = plannedIncome.currency_code;
+            income.income_date = (DateTime)plannedIncome.planned_date;
+            income.accountList = AccountDAO.GetAccountList(conn);
+            income.account_id = plannedIncome.account_id;
+            DbConn.Instance.FreeConnection(conn);
+            return View(income);
+        }
+
+        [HttpPost]
+        public IActionResult AddFromPlannedIncomeSecondStage([Bind("name", "income_source_id", "income_type_id", "amount", "currency_code", "income_date", "row_version", "account_id", "planned_income_id")] Income income)
+        {
+            string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
+
+            using (conn)
+            {
+                string request = "select sb.modify_income (pii_id => @id, pvi_name => @name, " +
+                                                    "pii_income_source_id => @income_source_id, " +
+                                                    "pii_income_type_id => @income_type_id, " +
+                                                    "pni_amount => @amount, " +
+                                                    "pvi_currency_code => @currency_code, " +
+                                                    "pdi_income_date => @income_date, " +
+                                                    "pii_row_version => @row_version, " +
+                                                    "pii_account_id => @account_id, " +
+                                                    "pii_planned_income_id => @planned_income_id)";
+                NpgsqlCommand cmd = new NpgsqlCommand(request, conn);
+                //SetCommandType(cmd, CommandType.Text);
+                cmd.Parameters.AddWithValue("id", NpgsqlDbType.Integer, DBNull.Value);
+                cmd.Parameters.AddWithValue("name", NpgsqlDbType.Varchar, income.name);
+                cmd.Parameters.AddWithValue("income_source_id", NpgsqlDbType.Integer, income.income_source_id);
+                cmd.Parameters.AddWithValue("income_type_id", NpgsqlDbType.Integer, income.income_type_id);
+                cmd.Parameters.AddWithValue("amount", NpgsqlDbType.Numeric, Convert.ToDecimal(income.amount));
+                cmd.Parameters.AddWithValue("currency_code", NpgsqlDbType.Varchar, income.currency_code);
+                cmd.Parameters.AddWithValue("income_date", NpgsqlDbType.Date, income.income_date);
+                cmd.Parameters.AddWithValue("row_version", NpgsqlDbType.Integer, income.row_version);
+                cmd.Parameters.AddWithValue("account_id", NpgsqlDbType.Integer, income.account_id);
+                cmd.Parameters.AddWithValue("planned_income_id", NpgsqlDbType.Integer, income.planned_income_id);
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+                DbConn.Instance.FreeConnection(conn);
+            }
+
+            return Redirect("/Income/Index");
+        } 
+
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;

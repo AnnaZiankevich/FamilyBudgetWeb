@@ -12,6 +12,7 @@ namespace WebAppPg.Models
         public int account_id { get; set; }
         public List<Account> accountList { get; set; }
         public int planned_income_id { get; set; }
+        public string planned_income_name { get; set; }
         public List<PlannedIncome> plannedIncomesList { get; set; }
         public int income_source_id { get; set; }
         public List<IncomeSource> incomeSourcesList { get; set; }

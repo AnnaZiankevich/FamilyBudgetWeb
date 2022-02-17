@@ -70,17 +70,6 @@ namespace WebAppPg.Controllers
         [HttpPost]
         public IActionResult AddFirstStage([Bind("transaction_date", "source_account_id", "target_account_id", "source_amount", "source_currency_code")] InteraccountTransaction interAccTransaction)
         {
-            /*return Redirect("/InteraccountTransaction/AddSecondStage?transaction_date=" + 
-                        interAccTransaction.transaction_date.ToString() + "&source_account_id=" + 
-                        interAccTransaction.source_account_id + "&target_account_id=" +
-                        interAccTransaction.target_account_id.ToString() + "&source_amount=" + 
-                        interAccTransaction.source_amount.ToString() + "&source_currency_code" + 
-                        interAccTransaction.source_currency_code);*/
-            /*
-            return RedirectToAction(AddSecondStage<interAccTransaction.transaction_date,
-                                                  interAccTransaction.source_account_id, interAccTransaction.target_account_id,
-                                                  interAccTransaction.source_amount, interAccTransaction.source_currency_code>);
-        */
             return RedirectToAction("AddSecondStage",
                        new
                        {

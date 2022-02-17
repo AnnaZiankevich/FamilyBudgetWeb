@@ -30,6 +30,30 @@ namespace WebAppPg.Models
             return plannedIncome;
         }
 
+        public static List<PlannedIncome> GetPlannedIncomeListForPeriod(NpgsqlConnection conn)
+        {
+            conn = DbConn.Instance.GetUsersConnection();
+            NpgsqlCommand cmd = new NpgsqlCommand("select id, name from sb.planned_income where " +
+                                                      "planned_date >= current_date " +
+                                                      "and planned_date <= current_date + interval '1 month'", 
+                                                      conn);
+            NpgsqlDataReader rdr = cmd.ExecuteReader();
+            List<PlannedIncome> plannedIncome = new List<PlannedIncome>();
+            if (rdr.HasRows)
+            {
+                while (rdr.Read())
+                {
+                    plannedIncome.Add(new PlannedIncome
+                    {
+                        id = rdr.GetInt32(0),
+                        name = rdr.GetString(1)
+                    });
+                }
+            }
+            DbConn.Instance.FreeConnection(conn);
+            return plannedIncome;
+        }
+
         public static PlannedIncome FindById(int id)
         {
             int plnIncId;
