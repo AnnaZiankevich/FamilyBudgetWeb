@@ -35,7 +35,11 @@ namespace WebAppPg.Models
             conn = DbConn.Instance.GetUsersConnection();
             NpgsqlCommand cmd = new NpgsqlCommand("select id, name from sb.planned_income where " +
                                                       "planned_date >= current_date " +
-                                                      "and planned_date <= current_date + interval '1 month'", 
+                                                      "and planned_date <= current_date + interval '1 month'" /*+
+                                                      "or start_date >= current_date " +
+                                                      "or start_date <= current_date + interval '1 month' "+
+                                                      "or end_date >= current_date " +
+                                                      "or end_date <= current_date + interval '1 month'" */, 
                                                       conn);
             NpgsqlDataReader rdr = cmd.ExecuteReader();
             List<PlannedIncome> plannedIncome = new List<PlannedIncome>();

@@ -49,7 +49,6 @@ namespace WebAppPg.Controllers
                         currency_name = rdr.GetString("currency_name"),
                         row_version = rdr.GetInt32("row_version")
                     };
-
                     accountList.accountList.Add(account);
                     //Read(account, rdr);
                 }
