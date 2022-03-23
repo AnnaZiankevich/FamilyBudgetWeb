@@ -10,53 +10,95 @@
     <!-- <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />/> -->
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        ::selection {
+            background: #a59ae8;
+            color: #fff;
+        }
+    </style>
 </head>
     <body style="background-color: #F6F8FA;">
 
         <div class="vertical-nav bg-white" id="sidebar">
+
             <div class="py-4 px-3 mb-4 bg-light">
-                <div class="media d-flex align-items-center">
-                    <img loading="lazy" src="~/img/logo2.png" alt="..." width="80" height="80" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+                <div class="mx-auto d-block" align-items-center" style="text-align: center; align-items: center;">
+                    <div class="">
+                        <img loading="lazy" src="~/img/logo2.png" alt="logo" width="115" height="135" class="mx-auto d-block">
+                    </div>
                     <div class="media-body">
-                        <h4 class="m-0">Smarter</h4>
-                        <p class="font-weight-normal text-muted mb-0">The budget tracker</p>
+                        <h4 class="m-0 text-muted font-weight-bold">SMARTER</h4>
+                        <p class="font-weight-normal text-muted mb-0" style="font-size: 13px;">The budget tracker</p>
                     </div>
                 </div>
             </div>
 
             <ul class="nav flex-column bg-white mb-0">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/img/home.png" alt="home_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                        Home
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="AccountOwner" asp-action="Index">Account owners</a>
+                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="AccountOwner" asp-action="Index">
+                        <img src="~/img/user.png" alt="account_owner_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                        Account owners
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Income" asp-action="Index">Income</a>
+                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Income" asp-action="Index">
+                        <img src="~/img/money.png" alt="income_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                        Incomes
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="Index">Payments</a>
+                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Payment" asp-action="Index">
+                        <img src="~/img/wallet.png" alt="payment_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                        Payments
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="PlannedIncome" asp-action="Index">Planned income</a>
+                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="PlannedIncome" asp-action="Index">
+                        <img src="~/img/income.png" alt="planned_income_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                        Planned incomes
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="PlannedPayment" asp-action="Index">Planned payment</a>
+                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="PlannedPayment" asp-action="Index">
+                        <img src="~/img/payments.png" alt="planned_payment_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                        Planned payments
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Total" asp-action="List">Balances</a>
+                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Total" asp-action="List">
+                        <img src="~/img/coins.png" alt="total_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                        Balances
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="InteraccountTransaction" asp-action="Index">Interaccount transactions</a>
+                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="InteraccountTransaction" asp-action="Index">
+                        <img src="~/img/transaction.png" alt="transactuin_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                        Interaccount transactions
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Balance" asp-action="List">Account balances</a>
+                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Balance" asp-action="List">
+                        <img src="~/img/save-money.png" alt="balance_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                        Account balances
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Home" asp-action="Privacy">
+                        <img src="~/img/lock.png" alt="balance_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                        Privacy
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="LogOut">Log out</a>
+                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="User" asp-action="LogOut">
+                        <img src="~/img/logout.png" alt="balance_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                        Log out
+                    </a>
                 </li>
             </ul>
         </div>
@@ -75,7 +117,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - WebAppPg - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - Smarter - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     </div>

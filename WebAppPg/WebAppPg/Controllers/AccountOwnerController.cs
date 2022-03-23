@@ -12,22 +12,31 @@ namespace WebAppPg.Controllers
 {
     public class AccountOwnerController : Controller
     {
-        static List<AccountOwner> accOwnerList = new List<AccountOwner>();
+        static AccountOwnerList accOwnerList = new AccountOwnerList { accountOwnerList = new List<AccountOwnerListItem>() };
+
         public IActionResult Index()
         {
             string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
             using (conn)
             {
-                NpgsqlCommand cmd = new NpgsqlCommand("select a.id, a.name, a.is_active, a.app_user_id, b.user_name from sb.account_owners a " +
+                NpgsqlCommand cmd = new NpgsqlCommand("select a.id, a.name, a.is_active, a.app_user_id, b.user_name, a.row_version " +
+                                                               "from sb.account_owners a " +
                                                                "left join sb.app_users b on b.id = a.app_user_id", conn);
-                accOwnerList.Clear();
+                accOwnerList.accountOwnerList.Clear();
                 NpgsqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
-                    var accOwner = new AccountOwner();
-                    accOwnerList.Add(accOwner);
-                    Read(accOwner, rdr);
+                    var accOwner = new AccountOwnerListItem
+                    {
+                        id = rdr.GetInt32("id"),
+                        name = rdr.GetString("name"),
+                        is_active = rdr.GetBoolean("is_active"),
+                        app_user_id = (rdr.IsDBNull("app_user_id") ? -1 : rdr.GetInt32("app_user_id")),
+                        app_user_name = (rdr.IsDBNull("user_name") ? "" : rdr.GetString("user_name")),
+                        row_version = rdr.GetInt32("row_version")
+                    };
+                    accOwnerList.accountOwnerList.Add(accOwner);
                 }
                 DbConn.Instance.FreeConnection(conn);
             }

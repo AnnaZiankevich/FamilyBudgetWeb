@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebAppPg.Models.AccountOwner>
+﻿@model WebAppPg.Models.AccountOwnerList
 @{
     ViewBag.Title = "Index";
 }
@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody style="background-color: #fdfcff;">
-        @foreach (var accOwner in Model)
+        @foreach (var accOwner in Model.accountOwnerList)
          {
            <tr>
                <td>@accOwner.name</td>
@@ -29,7 +29,7 @@
                        </label>
                    </div>
                </td>
-               <td>@accOwner.app_user_id</td>
+               <td>@accOwner.app_user_name</td>
                <td>
                    <a class="btn" href="/Account/List?accOwnerId=@accOwner.id" style="background-color: #fcc3a4; color: #fffbfa ">Accounts</a>             
                    <a class="btn" href="/AccountOwner/Edit/@accOwner.id" style="background-color: #55c9a9; color: #ebfff9 ">Edit</a>

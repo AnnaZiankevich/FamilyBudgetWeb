@@ -11,11 +11,13 @@ namespace WebAppPg.Models
     {
         [Key]
         public int id { get; set; }
+
         [Required]
         public string name { get; set; }
         public Boolean is_active { get; set; }
         public int row_version { get; set; }
         public int app_user_id { get; set; }
+        public string app_user_name { get; set; }
         public List<AppUserList> app_user_list { get; set; }
     }
 
