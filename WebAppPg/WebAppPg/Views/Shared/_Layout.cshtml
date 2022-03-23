@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WebAppPg</title>
-
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datetimepicker.min.css" />
     <!-- <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />/> -->
@@ -17,109 +16,118 @@
         }
     </style>
 </head>
-    <body style="background-color: #F6F8FA;">
+<body style="background-color: #F6F8FA;">
 
-        <div class="vertical-nav bg-white" id="sidebar">
+    <div class="vertical-nav bg-white" id="sidebar">
 
-            <div class="py-4 px-3 mb-4 bg-light">
-                <div class="mx-auto d-block" align-items-center" style="text-align: center; align-items: center;">
-                    <div class="">
-                        <img loading="lazy" src="~/img/logo2.png" alt="logo" width="115" height="135" class="mx-auto d-block">
-                    </div>
-                    <div class="media-body">
-                        <h4 class="m-0 text-muted font-weight-bold">SMARTER</h4>
-                        <p class="font-weight-normal text-muted mb-0" style="font-size: 13px;">The budget tracker</p>
-                    </div>
+        <div class="py-4 px-3 mb-4 bg-light">
+            <div class="mx-auto d-block" align-items-center" style="text-align: center; align-items: center;">
+                <div class="">
+                    <img loading="lazy" src="~/img/logo2.png" alt="logo" width="115" height="135" class="mx-auto d-block">
+                </div>
+                <div class="media-body">
+                    <h4 class="m-0 text-muted font-weight-bold">SMARTER</h4>
+                    <p class="font-weight-normal text-muted mb-0" style="font-size: 13px;">The budget tracker</p>
                 </div>
             </div>
-
-            <ul class="nav flex-column bg-white mb-0">
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Home" asp-action="Index">
-                        <img src="~/img/home.png" alt="home_icon" style="width:10%; height: 10%; margin-right: 10%;" />
-                        Home
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="AccountOwner" asp-action="Index">
-                        <img src="~/img/user.png" alt="account_owner_icon" style="width:10%; height: 10%; margin-right: 10%;" />
-                        Account owners
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Income" asp-action="Index">
-                        <img src="~/img/money.png" alt="income_icon" style="width:10%; height: 10%; margin-right: 10%;" />
-                        Incomes
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Payment" asp-action="Index">
-                        <img src="~/img/wallet.png" alt="payment_icon" style="width:10%; height: 10%; margin-right: 10%;" />
-                        Payments
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="PlannedIncome" asp-action="Index">
-                        <img src="~/img/income.png" alt="planned_income_icon" style="width:10%; height: 10%; margin-right: 10%;" />
-                        Planned incomes
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="PlannedPayment" asp-action="Index">
-                        <img src="~/img/payments.png" alt="planned_payment_icon" style="width:10%; height: 10%; margin-right: 10%;" />
-                        Planned payments
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Total" asp-action="List">
-                        <img src="~/img/coins.png" alt="total_icon" style="width:10%; height: 10%; margin-right: 10%;" />
-                        Balances
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="InteraccountTransaction" asp-action="Index">
-                        <img src="~/img/transaction.png" alt="transactuin_icon" style="width:10%; height: 10%; margin-right: 10%;" />
-                        Interaccount transactions
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Balance" asp-action="List">
-                        <img src="~/img/save-money.png" alt="balance_icon" style="width:10%; height: 10%; margin-right: 10%;" />
-                        Account balances
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Home" asp-action="Privacy">
-                        <img src="~/img/lock.png" alt="balance_icon" style="width:10%; height: 10%; margin-right: 10%;" />
-                        Privacy
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex" asp-area="" asp-controller="User" asp-action="LogOut">
-                        <img src="~/img/logout.png" alt="balance_icon" style="width:10%; height: 10%; margin-right: 10%;" />
-                        Log out
-                    </a>
-                </li>
-            </ul>
         </div>
 
-        <div class="page-content p-5" id="content">
-            <!-- Toggle button -->
-    <button id="sidebarCollapse" type="button" class="btn btn-light rounded-pill shadow-sm px-4 mb-4" style="background-color: #f1efff; ">
-        <small class="text-uppercase font-weight-bold" id="toggleMessage"> Hide menu</small>
-    </button>
-
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        <ul class="nav flex-column bg-white mb-0">
+            <li class="nav-item">
+                <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/img/home.png" alt="home_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                    Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark d-flex" asp-area="" asp-controller="AccountOwner" asp-action="Index">
+                    <img src="~/img/user.png" alt="account_owner_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                    Account owners
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Income" asp-action="Index">
+                    <img src="~/img/money.png" alt="income_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                    Incomes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Payment" asp-action="Index">
+                    <img src="~/img/wallet.png" alt="payment_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                    Payments
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark d-flex" asp-area="" asp-controller="PlannedIncome" asp-action="Index">
+                    <img src="~/img/income.png" alt="planned_income_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                    Planned incomes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark d-flex" asp-area="" asp-controller="PlannedPayment" asp-action="Index">
+                    <img src="~/img/payments.png" alt="planned_payment_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                    Planned payments
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Total" asp-action="List">
+                    <img src="~/img/coins.png" alt="total_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                    Balances
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark d-flex" asp-area="" asp-controller="InteraccountTransaction" asp-action="Index">
+                    <img src="~/img/transaction.png" alt="transactuin_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                    Interaccount transactions
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Balance" asp-action="List">
+                    <img src="~/img/save-money.png" alt="balance_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                    Account balances
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark d-flex" asp-area="" asp-controller="Home" asp-action="Privacy">
+                    <img src="~/img/lock.png" alt="balance_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                    Privacy
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark d-flex" asp-area="" asp-controller="User" asp-action="LogOut">
+                    <img src="~/img/logout.png" alt="balance_icon" style="width:10%; height: 10%; margin-right: 10%;" />
+                    Log out
+                </a>
+            </li>
+        </ul>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <div class="page-content p-5" id="content">
+        <!-- Toggle button -->
+        <button id="sidebarCollapse" type="button" class="btn btn-light rounded-pill shadow-sm px-4 mb-4" style="background-color: #f1efff; ">
+            <small class="text-uppercase font-weight-bold" id="toggleMessage"> Hide menu</small>
+        </button>
+
         <div class="container">
-            &copy; 2021 - Smarter - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <main role="main" class="pb-3">
+                @RenderBody()
+                <div class="alert alert-dismissible fade show fixed-bottom d-block hide_alert" role="alert" style="background: #a59ae8; margin-bottom: 0px; opacity: 97%;">
+                    <div class="container">
+                        This website uses cookies to improve your experience. We'll assume you're ok with this, but you can opt-out if you wish.
+                        <a href="#" data-dismiss="alert" class="close_once btn" id="myAlert" style="background-color: #55c9a9; color: #ebfff9; width: 10%; margin-left: 1%; ">Accept</a>
+                        <a class="btn d-inline-block" asp-area="" asp-controller="Home" asp-action="Privacy" style="background-color: #fcb58f; color: #ebfff9; width: 10%; ">
+                            Read more
+                        </a>
+                    </div>
+                </div>
+            </main>
         </div>
-    </footer>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2021 - Smarter - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -129,7 +137,41 @@
     <script src="~/lib/bootstrap/dist/js/jquery-3.2.1.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/moment-with-locales.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            btn_actual = $('#btntoggle').val();
+            if (btn_actual == '__s') {
+                $('#btntoggle').val($('#btntoggle').val().replace('__s', '__h'));
+                $('#btntoggle').css('background-image', 'url(~/img/hide.png)');
+                $('#pwd').attr('type', 'text');
+            }
+            else {
+                $('#btntoggle').val($('#btntoggle').val().replace('__h', '__s'));
+                $('#btntoggle').css('background-image', 'url(~/img/show.png)');
+                $('#pwd').attr('type', 'password');
+            }
+            return false;
+        });
+    </script>
+
+    <script>
+
+        $(document).on('click', '.close_once', function () {
+            localStorage.setItem('myAlert', 'true');
+        })
+
+        $(document).ready(function () {
+            let hide = localStorage.getItem('myAlert');
+            if (hide === 'true') {
+                $('.hide_alert').remove();
+            }
+        })
+    </script>
+
     <script type="text/javascript">
         $(function () {
             $('#datetimepicker2, #datetimepicker3, #datetimepicker4').datetimepicker({
@@ -167,6 +209,7 @@
             });
         });
     </script>
+
     @await RenderSectionAsync("Scripts", required: false)
-    </body>
+</body>
 </html>

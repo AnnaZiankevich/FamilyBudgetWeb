@@ -18,7 +18,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" />
+                <div class="d-flex">
+                    <input asp-for="Password" name="txtpassword" ID="txtPassword" TextMode="Password" class="form-control" />
+                    <i id="togglePassword" class="bi bi-eye-slash" style="cursor: pointer; margin-left: -30px; margin-top:1.7%;"></i>
+                </div>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -28,3 +31,13 @@
         </form>
     </div>
 </div>
+
+<script type="text/javascript">
+    var togglePassword = document.querySelector('#togglePassword');
+    var password = document.querySelector('#txtPassword');
+    togglePassword.addEventListener('click', function (e) {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.classList.toggle('bi-eye');
+    });
+</script>

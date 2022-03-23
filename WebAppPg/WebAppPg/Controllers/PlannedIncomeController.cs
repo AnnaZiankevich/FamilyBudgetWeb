@@ -16,7 +16,7 @@ namespace WebAppPg.Controllers
         static PlannedIncomeList plnIncList = new PlannedIncomeList { plannedIncomeList = new List<PlannedIncomeListItem>() };
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
             string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
             NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
@@ -57,6 +57,7 @@ namespace WebAppPg.Controllers
                 }
                 DbConn.Instance.FreeConnection(conn);
             }
+
             return View(plnIncList);
         }
 

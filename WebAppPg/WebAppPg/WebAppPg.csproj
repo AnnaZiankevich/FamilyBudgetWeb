@@ -5,6 +5,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\hide.png" />
+    <None Remove="Views\User\hide.png" />
+    <None Remove="Views\User\show.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\hide.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Views\User\hide.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Views\User\show.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Npgsql" Version="6.0.2" />
     <PackageReference Include="Quartz" Version="3.3.3" />
