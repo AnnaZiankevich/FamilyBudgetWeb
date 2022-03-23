@@ -12,6 +12,7 @@ namespace WebAppPg.Models
         public int account_id { get; set; }
         public List<Account> accountList { get; set; }
         public int planned_payment_id { get; set; }
+        public string planned_payment_name { get; set; }
         public List<PlannedPayment> plannedPaymentsList { get; set; }
         public int payment_receiver_id { get; set; }
         public List<PaymentReceiver> paymentReceiversList { get; set; }

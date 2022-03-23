@@ -30,6 +30,34 @@ namespace WebAppPg.Models
             return plannedPayment;
         }
 
+        public static List<PlannedPayment> GetPlannedPaymentListForPeriod(NpgsqlConnection conn)
+        {
+            conn = DbConn.Instance.GetUsersConnection();
+            NpgsqlCommand cmd = new NpgsqlCommand("select id, name from sb.planned_payments where " +
+                                                      "planned_date >= current_date " +
+                                                      "and planned_date <= current_date + interval '1 month'" /*+
+                                                      "or start_date >= current_date " +
+                                                      "or start_date <= current_date + interval '1 month' "+
+                                                      "or end_date >= current_date " +
+                                                      "or end_date <= current_date + interval '1 month'" */,
+                                                      conn);
+            NpgsqlDataReader rdr = cmd.ExecuteReader();
+            List<PlannedPayment> plannedPayment = new List<PlannedPayment>();
+            if (rdr.HasRows)
+            {
+                while (rdr.Read())
+                {
+                    plannedPayment.Add(new PlannedPayment
+                    {
+                        id = rdr.GetInt32(0),
+                        name = rdr.GetString(1)
+                    });
+                }
+            }
+            DbConn.Instance.FreeConnection(conn);
+            return plannedPayment;
+        }
+
         public static PlannedPayment FindById(int id)
         {
             int plnPaymId;

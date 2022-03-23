@@ -1,0 +1,21 @@
+﻿@model WebAppPg.Models.Payment
+@{
+    ViewBag.Title = "AddFromPlannedPayment";
+}
+
+<h3>Choose planned payment</h3>
+<form action="/Payment/AddFromPlannedPaymentFirstStage" method="post">
+
+    <p>
+        <div style="width: 30%; height: 20%;">
+            @Html.DropDownListFor(model => model.planned_payment_id, new SelectList(Model.plannedPaymentsList, "id", "name"),
+            new { @class = "form-control", @name = "planned_income_id" })
+        </div>
+    </p>
+
+    <p>
+        <input type="submit" class="btn" style="background-color: #55c9a9; color: #ebfff9; width: 10%;" value="Select" />
+        <a class="btn" href="/Payment/Index" style="background-color: #55c9a9; color: #ebfff9; width: 10%;">Cancel</a>
+    </p>
+
+</form>

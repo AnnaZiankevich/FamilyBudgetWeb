@@ -114,6 +114,93 @@ namespace WebAppPg.Controllers
             return Redirect("/Payment/Index");
         }
 
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        [HttpGet]
+        public IActionResult AddFromPlannedPaymentFirstStage()
+        {
+            string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
+            Payment payment = new Payment();
+            payment.plannedPaymentsList = PlannedPaymentDAO.GetPlannedPaymentListForPeriod(conn);
+            DbConn.Instance.FreeConnection(conn);
+            return View(payment);
+        }
+        //[Bind("planned_income_id")]
+        [HttpPost]
+        public IActionResult AddFromPlannedPaymentFirstStage(int planned_payment_id)
+        {
+            return RedirectToAction("AddFromPlannedPaymentSecondStage",
+                       new
+                       {
+                           id = planned_payment_id
+                       });
+        }
+
+        [HttpGet]
+        public IActionResult AddFromPlannedPaymentSecondStage(int id) 
+        {
+            string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
+            PlannedPayment plannedPayment = PlannedPaymentDAO.FindById(id);
+            Payment payment = new Payment();
+            payment.plannedPaymentsList = PlannedPaymentDAO.GetPlannedPaymentListForPeriod(conn);
+            payment.planned_payment_id = plannedPayment.id;
+            payment.planned_payment_name = plannedPayment.name;
+            payment.name = plannedPayment.name;
+            payment.paymentReceiversList = PaymentReceiverDAO.GetPaymentReceiverList(conn);
+            payment.payment_receiver_id = plannedPayment.payment_receiver_id;
+            payment.paymentTypesList = PaymentTypeDAO.GetPaymentTypeList(conn);
+            payment.payment_type_id = plannedPayment.payment_type_id;
+            payment.amount = plannedPayment.amount;
+            payment.currencyCodesList = CurrencyCodeDAO.GetCurrCodesList(conn);
+            payment.currency_code = plannedPayment.currency_code;
+            payment.payment_date = (DateTime)plannedPayment.planned_date;
+            payment.accountList = AccountDAO.GetAccountList(conn);
+            payment.account_id = plannedPayment.account_id;
+            DbConn.Instance.FreeConnection(conn);
+            return View(payment);
+        }
+
+        [HttpPost]
+        public IActionResult AddFromPlannedPaymentSecondStage([Bind("name", "payment_receiver_id", "payment_type_id", "amount", "currency_code", "payment_date", "row_version", "account_id", "planned_payment_id")] Payment payment)
+        {
+            string userId = HttpContext.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            NpgsqlConnection conn = DbConn.Instance.GetMainConnection(int.Parse(userId));
+
+            using (conn)
+            {
+                string request = "select sb.modify_payments (pii_id => @id, pvi_name => @name, " +
+                                                    "pii_payment_receiver_id => @payment_receiver_id, " +
+                                                    "pii_payment_type_id => @payment_type_id, " +
+                                                    "pni_amount => @amount, " +
+                                                    "pvi_currency_code => @currency_code, " +
+                                                    "pdi_payment_date => @payment_date, " +
+                                                    "pii_row_version => @row_version, " +
+                                                    "pii_account_id => @account_id, " +
+                                                    "pii_planned_payment_id => @planned_payment_id)";
+                NpgsqlCommand cmd = new NpgsqlCommand(request, conn);
+                //SetCommandType(cmd, CommandType.Text);
+                cmd.Parameters.AddWithValue("id", NpgsqlDbType.Integer, DBNull.Value);
+                cmd.Parameters.AddWithValue("name", NpgsqlDbType.Varchar, payment.name);
+                cmd.Parameters.AddWithValue("payment_receiver_id", NpgsqlDbType.Integer, payment.payment_receiver_id);
+                cmd.Parameters.AddWithValue("payment_type_id", NpgsqlDbType.Integer, payment.payment_type_id);
+                cmd.Parameters.AddWithValue("amount", NpgsqlDbType.Numeric, Convert.ToDecimal(payment.amount));
+                cmd.Parameters.AddWithValue("currency_code", NpgsqlDbType.Varchar, payment.currency_code);
+                cmd.Parameters.AddWithValue("payment_date", NpgsqlDbType.Date, payment.payment_date);
+                cmd.Parameters.AddWithValue("row_version", NpgsqlDbType.Integer, payment.row_version);
+                cmd.Parameters.AddWithValue("account_id", NpgsqlDbType.Integer, payment.account_id);
+                cmd.Parameters.AddWithValue("planned_payment_id", NpgsqlDbType.Integer, payment.planned_payment_id);
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+                DbConn.Instance.FreeConnection(conn);
+            }
+
+            return Redirect("/Payment/Index");
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         [HttpGet]
         public IActionResult Edit(int id)
         {
