@@ -142,24 +142,6 @@
 
     <script>
 
-        $(document).ready(function () {
-            btn_actual = $('#btntoggle').val();
-            if (btn_actual == '__s') {
-                $('#btntoggle').val($('#btntoggle').val().replace('__s', '__h'));
-                $('#btntoggle').css('background-image', 'url(~/img/hide.png)');
-                $('#pwd').attr('type', 'text');
-            }
-            else {
-                $('#btntoggle').val($('#btntoggle').val().replace('__h', '__s'));
-                $('#btntoggle').css('background-image', 'url(~/img/show.png)');
-                $('#pwd').attr('type', 'password');
-            }
-            return false;
-        });
-    </script>
-
-    <script>
-
         $(document).on('click', '.close_once', function () {
             localStorage.setItem('myAlert', 'true');
         })

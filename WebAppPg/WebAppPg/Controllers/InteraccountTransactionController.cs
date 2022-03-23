@@ -114,9 +114,9 @@ namespace WebAppPg.Controllers
                                                     "pii_source_account_id => @source_account_id, " +
                                                     "pii_target_account_id => @target_account_id, " +
                                                     "pni_source_amount => @source_amount, " +
-                                                    "pvi_source_cur_code => @source_cur_code, " +
+                                                    "pvi_source_cur_code => @source_currency_code, " +
                                                     "pni_target_amount => @target_amount, " +
-                                                    "pvi_target_cur_code => @target_cur_code, " +
+                                                    "pvi_target_cur_code => @target_currency_code, " +
                                                     "pii_row_version => @row_version)";
                 NpgsqlCommand cmd = new NpgsqlCommand(request, conn);
                 //SetCommandType(cmd, CommandType.Text);
@@ -125,9 +125,9 @@ namespace WebAppPg.Controllers
                 cmd.Parameters.AddWithValue("source_account_id", NpgsqlDbType.Integer, interAccTransaction.source_account_id);
                 cmd.Parameters.AddWithValue("target_account_id", NpgsqlDbType.Integer, interAccTransaction.target_account_id);
                 cmd.Parameters.AddWithValue("source_amount", NpgsqlDbType.Numeric, Convert.ToDecimal(interAccTransaction.source_amount));
-                cmd.Parameters.AddWithValue("source_cur_code", NpgsqlDbType.Varchar, interAccTransaction.source_currency_code);
+                cmd.Parameters.AddWithValue("source_currency_code", NpgsqlDbType.Varchar, interAccTransaction.source_currency_code);
                 cmd.Parameters.AddWithValue("target_amount", NpgsqlDbType.Numeric, Convert.ToDecimal(interAccTransaction.target_amount));
-                cmd.Parameters.AddWithValue("target_cur_code", NpgsqlDbType.Varchar, interAccTransaction.target_currency_code);
+                cmd.Parameters.AddWithValue("target_currency_code", NpgsqlDbType.Varchar, interAccTransaction.target_currency_code);
                 cmd.Parameters.AddWithValue("row_version", NpgsqlDbType.Integer, interAccTransaction.row_version);
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();

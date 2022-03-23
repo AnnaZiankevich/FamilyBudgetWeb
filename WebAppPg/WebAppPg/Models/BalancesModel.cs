@@ -10,6 +10,6 @@ namespace WebAppPg.Models
         public int id { get; set; }
         public decimal amount { get; set; }
         public string currency_code { get; set; }
-        public List<CurrencyCode> cЫurrencyCodesList { get; set; }
+        public List<CurrencyCode> currencyCodesList { get; set; }
     }
 }
